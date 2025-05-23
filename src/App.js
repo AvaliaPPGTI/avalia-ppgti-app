@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState} from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ListagemCandidato from './components/ListagemCandidato';
+import AvaliacaoCandidato from './components/AvaliacaoCandidato';
 
-function App() {
+// Dados dos candidatos (pode ser movido para um arquivo JSON separado)
+const candidatosData = {
+  "candidatos": [
+    // ... (seus dados de candidatos aqui)
+  ]
+};
+
+
+const App = () => {
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Desenvolvimento app avalia PPGTI
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Container fluid className="mt-4">
+        <Row>
+          <Col md={6}>
+            <ListagemCandidato
+              candidatos={candidatosData.candidatos}
+              onSelectCandidate={setSelectedCandidate}
+            />
+          </Col>
+          <Col md={6}>
+            <AvaliacaoCandidato selectedCandidate={selectedCandidate} />
+          </Col>
+        </Row>
+      </Container>
+
   );
-}
+};
 
 export default App;
