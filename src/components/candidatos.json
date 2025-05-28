@@ -1,323 +1,604 @@
 {
   "candidatos": [
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Nicoly Figueredo Pessoa de Almeida",
-        "email": "nicoly.figueredo@gmail.com",
-        "dataNascimento": "12/10/1986",
-        "cotista": false,
-        "modalidadeCota": ""
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Emerson Diego da Costa Araujo",
-        "email": "emerson.diego@gmail.com",
-        "dataNascimento": "09/03/1998",
-        "cotista": false,
-        "modalidadeCota": ""
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Ricardo Anastácio de Souza",
-        "email": "ricardo.anastacio@gmail.com",
-        "dataNascimento": "09/01/1990",
-        "cotista": true,
-        "modalidadeCota": "TESTE"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Alex de Sousa Lima",
-        "email": "alex.lima@gmail.com",
-        "dataNascimento": "17/11/1997",
-        "cotista": false,
-        "modalidadeCota": ""
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Ivan Zichtl Santos"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Armindo Inácio de Araújo Júnior"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Ruanney Nascimento Costa de Almeida"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Fabiano Maciel Vieira"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Diego Juan dos Santos Silva"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Lucas Guimarães da Silva"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Arthur Rolim de Oliveira"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Euridyce Karla Carvalho das Graças"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Felipe Targino do Nascimento"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Leanderson Coelho dos Santos"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Sávio Murillo Dias Bastos"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "André Pontes Vaz de Medeiros Filho"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Julio Cezar Rodrigues Trindade"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Thiago Diniz Tomé de Lima"
-      },
-      {
-        "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
-        "nome": "Edglay Barros"
-      },
-      {
-        "tema": "TEMA 2 - CDI - Matching de Dados e Inteligência Artificial para Streaming de Dados",
-        "nome": "Rodolfo Bolconte Donato"
-      },
-      {
-        "tema": "TEMA 3 - CDI - Métodos de Otimização ou de Aprendizagem de Máquina Aplicados a Problemas das Áreas de Logística, Segurança, Educação, Saúde ou Jogos",
-        "nome": "Isaac Gomes Veras"
-      },
-      {
-        "tema": "TEMA 3 - CDI - Métodos de Otimização ou de Aprendizagem de Máquina Aplicados a Problemas das Áreas de Logística, Segurança, Educação, Saúde ou Jogos",
-        "nome": "Andressa Theotônio Alves de Figueirêdo"
-      },
-      {
-        "tema": "TEMA 3 - CDI - Métodos de Otimização ou de Aprendizagem de Máquina Aplicados a Problemas das Áreas de Logística, Segurança, Educação, Saúde ou Jogos",
-        "nome": "Ericléverson Alves Ramalho de Figueirêdo"
-      },
-      {
-        "tema": "TEMA 3 - CDI - Métodos de Otimização ou de Aprendizagem de Máquina Aplicados a Problemas das Áreas de Logística, Segurança, Educação, Saúde ou Jogos",
-        "nome": "Erick Amaro Outra de Lima"
-      },
-      {
-        "tema": "TEMA 4 - CDI - Arquiteturas e Modelos de Inteligência Artificial Aplicados à Educação, Saúde e Cidades",
-        "nome": "Marina Lima Maraca já Martins"
-      },
-      {
-        "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
-        "nome": "Alíssia Deolinda Oliveira de Lima"
-      },
-      {
-        "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
-        "nome": "Lucas Pessoa Alves"
-      },
-      {
-        "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
-        "nome": "Caroline de Souza Evangelista"
-      },
-      
-      {
-        "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
-        "nome": "Lucas Magno de Oliveira Aragão"
-      },
-      {
-        "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
-        "nome": "Daniel dos Santos Brandão"
-      },
-      {
-        "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
-        "nome": "Osmar Vieira de Sousa"
-      },
-      {
-        "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
-        "nome": "Carlos Rodrigo Costa da Silva"
-      },
-      {
-        "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
-        "nome": "Wesley Adonai Pereira da Silva"
-      },
-      {
-        "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
-        "nome": "Cris Henrique Silva"
-      },
-      {
-        "tema": "TEMA 7- GDS - Soluções em Plataformas de Sensoriamento Inteligente para Indústria",
-        "nome": "José Jefferson Pires Gonçalves"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Ana Beatriz de Araújo Farias"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Bryan Willey Marques Palhano"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Daniel Cunha Costa"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Jonas Bernardino de Lima"
-      },
-      
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Ivan Fillipe Rodrigues dos Santos"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Kellla Vitória Felipe Bezerra"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Ricardo Pereira Lins"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Isaque Mendes Bezerra"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Rodrigo Resende Santos"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Damião Otávio da Conceição"
-      },
-      {
-        "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
-        "nome": "Andrew Galvão de Figueiredo Oliveira"
-      },
-      {
-        "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
-        "nome": "Tiago Diniz Brasileiro Lira"
-      },
-      {
-        "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
-        "nome": "Mateus de Morais Lima"
-      },
-      {
-        "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
-        "nome": "Hugo Nathan Soares Diniz"
-      },
-      {
-        "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
-        "nome": "Adilson Soares da Silva"
-      },
-      {
-        "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
-        "nome": "Jessé Rangel Queiroz Duarte"
-      },
-      {
-        "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
-        "nome": "Évelyn Milenna da Nóbrega"
-      },
-      
-      {
-        "tema": "TEMA 10 -GDS- Gestão, Desenvolvimento e Testes em Projetos Ágeis de software",
-        "nome": "Mayron da Costa Bezerra"
-      },
-      {
-        "tema": "TEMA 10 -GDS- Gestão, Desenvolvimento e Testes em Projetos Ágeis de software",
-        "nome": "Hugo Nathan Soares Diniz"
-      },
-      {
-        "tema": "TEMA 10 -GDS- Gestão, Desenvolvimento e Testes em Projetos Ágeis de software",
-        "nome": "Rodrigo Resende Santos"
-      },
-      {
-        "tema": "TEMA 10 -GDS- Gestão, Desenvolvimento e Testes em Projetos Ágeis de software",
-        "nome": "Marcelo Jardim Cardoso"
-      },
-      {
-        "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
-        "nome": "Edmagno do Nascimento Lins"
-      },
-      {
-        "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
-        "nome": "Márcia Cristina Rafael de Lima"
-      },
-      {
-        "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
-        "nome": "Lucyane Kelly Pereira da Silva"
-      },
-      {
-        "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
-        "nome": "Álekiss Manço de Melo"
-      },
-      {
-        "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
-        "nome": "Severino Pereira das Chagas Neto"
-      },
-      {
-        "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
-        "nome": "Thiago Alexandre Agustinho Dos Santos"
-      },
-      {
-        "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
-        "nome": "Diogo de Mendonça Neves"
-      },
-      {
-        "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
-        "nome": "Talitta Ferreira Vieira Lima"
-      },
-      {
-        "tema": "TEMA 12- GDS - Uso de Blockchain e Inteligência Artificial na Transformação Digital do Sistema Único de Saúde (SUS)",
-        "nome": "Fabiano Santana Ferreira"
-      },
-      {
-        "tema": "TEMA 13- GDS - Desenvolvimento de Sistemas Blockchain Apoiados pela Inteligência Artificial",
-        "nome": "Gustavo Lira Santos"
-      },
-      {
-        "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
-        "nome": "Rafael Cavalcante Chaves"
-      },
-      {
-        "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
-        "nome": "Demesio Oliveira"
-      },
-      {
-        "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
-        "nome": "José Silvestre da Silva Galvão"
-      },
-      {
-        "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
-        "nome": "Diego Figueiredo"
-      },
-      {
-        "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
-        "nome": "Alysson Pereira do Nascimento"
-      },
-      {
-        "tema": "TEMA 15- RSD - Desenvolvimento ou avaliação de solução computacional no contexto de redes",
-        "nome": "Cinaglia Adagles da Silva"
-      },
-      {
-        "tema": "TEMA 15- RSD - Desenvolvimento ou avaliação de solução computacional no contexto de redes",
-        "nome": "Cleilson Gurgel de Brito"
-      },
-      {
-        "tema": "TEMA 15- RSD - Desenvolvimento ou avaliação de solução computacional no contexto de redes",
-        "nome": "Paulemir de Sousa Soares"
-      },
-      {
-        "tema": "TEMA 15- RSD - Desenvolvimento ou avaliação de solução computacional no contexto de redes",
-        "nome": "Tiago José Bandeira Lourenço"
-      }
-    ]
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Nicoly Figueredo Pessoa de Almeida",
+      "email": "nicoly.figueredo.pessoa.de.almeida@gmail.com",
+      "dataNascimento": "06/10/1973",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Emerson Diego da Costa Araujo",
+      "email": "emerson.diego.da.costa.araujo@gmail.com",
+      "dataNascimento": "15/08/1995",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Ricardo Anastácio de Souza",
+      "email": "ricardo.anastacio.de.souza@gmail.com",
+      "dataNascimento": "02/04/2002",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Alex de Sousa Lima",
+      "email": "alex.de.sousa.lima@gmail.com",
+      "dataNascimento": "10/02/1999",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Ivan Zichtl Santos",
+      "email": "ivan.zichtl.santos@gmail.com",
+      "dataNascimento": "14/10/1983",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Armindo Inácio de Araújo Júnior",
+      "email": "armindo.inacio.de.araujo.junior@gmail.com",
+      "dataNascimento": "19/05/1999",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Ruanney Nascimento Costa de Almeida",
+      "email": "ruanney.nascimento.costa.de.almeida@gmail.com",
+      "dataNascimento": "23/02/1972",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Fabiano Maciel Vieira",
+      "email": "fabiano.maciel.vieira@gmail.com",
+      "dataNascimento": "03/06/1971",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Diego Juan dos Santos Silva",
+      "email": "diego.juan.dos.santos.silva@gmail.com",
+      "dataNascimento": "09/01/1985",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Lucas Guimarães da Silva",
+      "email": "lucas.guimaraes.da.silva@gmail.com",
+      "dataNascimento": "29/04/1997",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Arthur Rolim de Oliveira",
+      "email": "arthur.rolim.de.oliveira@gmail.com",
+      "dataNascimento": "08/02/1985",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Euridyce Karla Carvalho das Graças",
+      "email": "euridyce.karla.carvalho.das.gracas@gmail.com",
+      "dataNascimento": "03/07/1983",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Felipe Targino do Nascimento",
+      "email": "felipe.targino.do.nascimento@gmail.com",
+      "dataNascimento": "02/07/1983",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Leanderson Coelho dos Santos",
+      "email": "leanderson.coelho.dos.santos@gmail.com",
+      "dataNascimento": "29/12/1989",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Sávio Murillo Dias Bastos",
+      "email": "savio.murillo.dias.bastos@gmail.com",
+      "dataNascimento": "15/10/1992",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "André Pontes Vaz de Medeiros Filho",
+      "email": "andre.pontes.vaz.de.medeiros.filho@gmail.com",
+      "dataNascimento": "15/02/1973",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Julio Cezar Rodrigues Trindade",
+      "email": "julio.cezar.rodrigues.trindade@gmail.com",
+      "dataNascimento": "04/06/1974",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Thiago Diniz Tomé de Lima",
+      "email": "thiago.diniz.tome.de.lima@gmail.com",
+      "dataNascimento": "20/01/2002",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 1 - CDI - Ciência de Dados e Inteligência Artificial em Dominios Diversos",
+      "nome": "Edglay Barros",
+      "email": "edglay.barros@gmail.com",
+      "dataNascimento": "19/11/1984",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 2 - CDI - Matching de Dados e Inteligência Artificial para Streaming de Dados",
+      "nome": "Rodolfo Bolconte Donato",
+      "email": "rodolfo.bolconte.donato@gmail.com",
+      "dataNascimento": "13/02/1988",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 3 - CDI - Métodos de Otimização ou de Aprendizagem de Máquina Aplicados a Problemas das Áreas de Logística, Segurança, Educação, Saúde ou Jogos",
+      "nome": "Isaac Gomes Veras",
+      "email": "isaac.gomes.veras@gmail.com",
+      "dataNascimento": "30/03/1997",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 3 - CDI - Métodos de Otimização ou de Aprendizagem de Máquina Aplicados a Problemas das Áreas de Logística, Segurança, Educação, Saúde ou Jogos",
+      "nome": "Andressa Theotônio Alves de Figueirêdo",
+      "email": "andressa.theotonio.alves.de.figueiredo@gmail.com",
+      "dataNascimento": "11/07/1971",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 3 - CDI - Métodos de Otimização ou de Aprendizagem de Máquina Aplicados a Problemas das Áreas de Logística, Segurança, Educação, Saúde ou Jogos",
+      "nome": "Ericléverson Alves Ramalho de Figueirêdo",
+      "email": "ericleverson.alves.ramalho.de.figueiredo@gmail.com",
+      "dataNascimento": "05/08/1989",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 3 - CDI - Métodos de Otimização ou de Aprendizagem de Máquina Aplicados a Problemas das Áreas de Logística, Segurança, Educação, Saúde ou Jogos",
+      "nome": "Erick Amaro Outra de Lima",
+      "email": "erick.amaro.outra.de.lima@gmail.com",
+      "dataNascimento": "19/01/1985",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 4 - CDI - Arquiteturas e Modelos de Inteligência Artificial Aplicados à Educação, Saúde e Cidades",
+      "nome": "Marina Lima Maraca já Martins",
+      "email": "marina.lima.maraca.ja.martins@gmail.com",
+      "dataNascimento": "24/08/1992",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
+      "nome": "Alíssia Deolinda Oliveira de Lima",
+      "email": "alissia.deolinda.oliveira.de.lima@gmail.com",
+      "dataNascimento": "08/10/1975",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
+      "nome": "Lucas Pessoa Alves",
+      "email": "lucas.pessoa.alves@gmail.com",
+      "dataNascimento": "12/07/1989",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
+      "nome": "Caroline de Souza Evangelista",
+      "email": "caroline.de.souza.evangelista@gmail.com",
+      "dataNascimento": "22/09/1992",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
+      "nome": "Lucas Magno de Oliveira Aragão",
+      "email": "lucas.magno.de.oliveira.aragao@gmail.com",
+      "dataNascimento": "12/11/1971",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
+      "nome": "Daniel dos Santos Brandão",
+      "email": "daniel.dos.santos.brandao@gmail.com",
+      "dataNascimento": "06/08/1975",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
+      "nome": "Osmar Vieira de Sousa",
+      "email": "osmar.vieira.de.sousa@gmail.com",
+      "dataNascimento": "12/12/1998",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
+      "nome": "Carlos Rodrigo Costa da Silva",
+      "email": "carlos.rodrigo.costa.da.silva@gmail.com",
+      "dataNascimento": "30/06/1974",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
+      "nome": "Wesley Adonai Pereira da Silva",
+      "email": "wesley.adonai.pereira.da.silva@gmail.com",
+      "dataNascimento": "08/02/1992",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 5 - GDS - Inteligência Artificial na Educação",
+      "nome": "Cris Henrique Silva",
+      "email": "cris.henrique.silva@gmail.com",
+      "dataNascimento": "17/09/1970",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 7- GDS - Soluções em Plataformas de Sensoriamento Inteligente para Indústria",
+      "nome": "José Jefferson Pires Gonçalves",
+      "email": "jose.jefferson.pires.goncalves@gmail.com",
+      "dataNascimento": "16/07/1969",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Ana Beatriz de Araújo Farias",
+      "email": "ana.beatriz.de.araujo.farias@gmail.com",
+      "dataNascimento": "30/12/1986",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Bryan Willey Marques Palhano",
+      "email": "bryan.willey.marques.palhano@gmail.com",
+      "dataNascimento": "29/08/1984",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Daniel Cunha Costa",
+      "email": "daniel.cunha.costa@gmail.com",
+      "dataNascimento": "07/02/1970",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Jonas Bernardino de Lima",
+      "email": "jonas.bernardino.de.lima@gmail.com",
+      "dataNascimento": "12/12/1997",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Ivan Fillipe Rodrigues dos Santos",
+      "email": "ivan.fillipe.rodrigues.dos.santos@gmail.com",
+      "dataNascimento": "07/06/1995",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Kellla Vitória Felipe Bezerra",
+      "email": "kellla.vitoria.felipe.bezerra@gmail.com",
+      "dataNascimento": "20/04/1974",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Ricardo Pereira Lins",
+      "email": "ricardo.pereira.lins@gmail.com",
+      "dataNascimento": "09/06/1978",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Isaque Mendes Bezerra",
+      "email": "isaque.mendes.bezerra@gmail.com",
+      "dataNascimento": "27/04/1979",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Rodrigo Resende Santos",
+      "email": "rodrigo.resende.santos@gmail.com",
+      "dataNascimento": "07/01/1972",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Damião Otávio da Conceição",
+      "email": "damiao.otavio.da.conceicao@gmail.com",
+      "dataNascimento": "09/09/1978",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 8- GDS - Aplicação de Técnicas Inteligentes no Contexto de Engenharia de Software",
+      "nome": "Andrew Galvão de Figueiredo Oliveira",
+      "email": "andrew.galvao.de.figueiredo.oliveira@gmail.com",
+      "dataNascimento": "01/10/1986",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
+      "nome": "Tiago Diniz Brasileiro Lira",
+      "email": "tiago.diniz.brasileiro.lira@gmail.com",
+      "dataNascimento": "12/03/2003",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
+      "nome": "Mateus de Morais Lima",
+      "email": "mateus.de.morais.lima@gmail.com",
+      "dataNascimento": "30/10/1978",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
+      "nome": "Hugo Nathan Soares Diniz",
+      "email": "hugo.nathan.soares.diniz@gmail.com",
+      "dataNascimento": "12/02/2002",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
+      "nome": "Adilson Soares da Silva",
+      "email": "adilson.soares.da.silva@gmail.com",
+      "dataNascimento": "03/03/1985",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
+      "nome": "Jessé Rangel Queiroz Duarte",
+      "email": "jesse.rangel.queiroz.duarte@gmail.com",
+      "dataNascimento": "07/08/1972",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 9- GDS - Boas Práticas em Gerenciamento de Projetos de Software: Otimizando a Colaboração e Produtividade em Equipes Virtuais ou Híbridos",
+      "nome": "Évelyn Milenna da Nóbrega",
+      "email": "evelyn.milenna.da.nobrega@gmail.com",
+      "dataNascimento": "21/09/1974",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 10 -GDS- Gestão, Desenvolvimento e Testes em Projetos Ágeis de software",
+      "nome": "Mayron da Costa Bezerra",
+      "email": "mayron.da.costa.bezerra@gmail.com",
+      "dataNascimento": "16/01/1999",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pessoas com Deficiência (PcD)"
+    },
+    {
+      "tema": "TEMA 10 -GDS- Gestão, Desenvolvimento e Testes em Projetos Ágeis de software",
+      "nome": "Hugo Nathan Soares Diniz",
+      "email": "hugo.nathan.soares.diniz@gmail.com",
+      "dataNascimento": "26/03/1973",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 10 -GDS- Gestão, Desenvolvimento e Testes em Projetos Ágeis de software",
+      "nome": "Rodrigo Resende Santos",
+      "email": "rodrigo.resende.santos@gmail.com",
+      "dataNascimento": "22/03/1995",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 10 -GDS- Gestão, Desenvolvimento e Testes em Projetos Ágeis de software",
+      "nome": "Marcelo Jardim Cardoso",
+      "email": "marcelo.jardim.cardoso@gmail.com",
+      "dataNascimento": "18/06/1994",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
+      "nome": "Edmagno do Nascimento Lins",
+      "email": "edmagno.do.nascimento.lins@gmail.com",
+      "dataNascimento": "26/12/1988",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
+      "nome": "Márcia Cristina Rafael de Lima",
+      "email": "marcia.cristina.rafael.de.lima@gmail.com",
+      "dataNascimento": "23/04/1998",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
+      "nome": "Lucyane Kelly Pereira da Silva",
+      "email": "lucyane.kelly.pereira.da.silva@gmail.com",
+      "dataNascimento": "28/04/1979",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
+      "nome": "Álekiss Manço de Melo",
+      "email": "alekiss.manco.de.melo@gmail.com",
+      "dataNascimento": "22/09/1979",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
+      "nome": "Severino Pereira das Chagas Neto",
+      "email": "severino.pereira.das.chagas.neto@gmail.com",
+      "dataNascimento": "05/09/1972",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
+      "nome": "Thiago Alexandre Agustinho Dos Santos",
+      "email": "thiago.alexandre.agustinho.dos.santos@gmail.com",
+      "dataNascimento": "06/02/1973",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
+      "nome": "Diogo de Mendonça Neves",
+      "email": "diogo.de.mendonca.neves@gmail.com",
+      "dataNascimento": "19/05/2002",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 11- GDS - Abordagens Multidisciplinares com Gamificação, Metodologias Ativas e Interação",
+      "nome": "Talitta Ferreira Vieira Lima",
+      "email": "talitta.ferreira.vieira.lima@gmail.com",
+      "dataNascimento": "21/12/1971",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 12- GDS - Uso de Blockchain e Inteligência Artificial na Transformação Digital do Sistema Único de Saúde (SUS)",
+      "nome": "Fabiano Santana Ferreira",
+      "email": "fabiano.santana.ferreira@gmail.com",
+      "dataNascimento": "06/03/1977",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 13- GDS - Desenvolvimento de Sistemas Blockchain Apoiados pela Inteligência Artificial",
+      "nome": "Gustavo Lira Santos",
+      "email": "gustavo.lira.santos@gmail.com",
+      "dataNascimento": "02/02/1993",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
+      "nome": "Rafael Cavalcante Chaves",
+      "email": "rafael.cavalcante.chaves@gmail.com",
+      "dataNascimento": "29/07/1992",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
+      "nome": "Demesio Oliveira",
+      "email": "demesio.oliveira@gmail.com",
+      "dataNascimento": "24/11/1984",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
+      "nome": "José Silvestre da Silva Galvão",
+      "email": "jose.silvestre.da.silva.galvao@gmail.com",
+      "dataNascimento": "18/04/1980",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
+      "nome": "Diego Figueiredo",
+      "email": "diego.figueiredo@gmail.com",
+      "dataNascimento": "25/10/1993",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 14- RSD - Redes 5G Privadas e Computação na Borda para Indústria 4.0",
+      "nome": "Alysson Pereira do Nascimento",
+      "email": "alysson.pereira.do.nascimento@gmail.com",
+      "dataNascimento": "08/12/1981",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Baixa Renda"
+    },
+    {
+      "tema": "TEMA 15- RSD - Desenvolvimento ou avaliação de solução computacional no contexto de redes",
+      "nome": "Cinaglia Adagles da Silva",
+      "email": "cinaglia.adagles.da.silva@gmail.com",
+      "dataNascimento": "05/02/1973",
+      "cotista": false,
+      "modalidadeCota": ""
+    },
+    {
+      "tema": "TEMA 15- RSD - Desenvolvimento ou avaliação de solução computacional no contexto de redes",
+      "nome": "Cleilson Gurgel de Brito",
+      "email": "cleilson.gurgel.de.brito@gmail.com",
+      "dataNascimento": "19/11/2001",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Pretos, Pardos ou Indígenas (PPI)"
+    },
+    {
+      "tema": "TEMA 15- RSD - Desenvolvimento ou avaliação de solução computacional no contexto de redes",
+      "nome": "Paulemir de Sousa Soares",
+      "email": "paulemir.de.sousa.soares@gmail.com",
+      "dataNascimento": "28/01/1979",
+      "cotista": true,
+      "modalidadeCota": "Reserva para Escola Pública"
+    },
+    {
+      "tema": "TEMA 15- RSD - Desenvolvimento ou avaliação de solução computacional no contexto de redes",
+      "nome": "Tiago José Bandeira Lourenço",
+      "email": "tiago.jose.bandeira.lourenco@gmail.com",
+      "dataNascimento": "27/07/1996",
+      "cotista": false,
+      "modalidadeCota": ""
+    }
+  ]
 }
