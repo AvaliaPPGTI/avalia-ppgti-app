@@ -1,51 +1,103 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Button, Dropdown, ListGroup, Alert } from 'react-bootstrap';
 
 const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
-    const [topics, setTopics] = useState([]); // guarda a lista de temas (id + nome)
-    const [selectedTopic, setSelectedTopic] = useState(null); // guarda o tema selecionado
+    const [selectedTheme, setSelectedTheme] = useState('All');
+    const [selectedTopicId, setSelectedTopicId] = useState('All');
+    const [topics, setTopics] = useState([]);
     const [candidatos, setCandidatos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Carrega os temas
     useEffect(() => {
         fetch('http://localhost:8080/api/research-topics/by-process/1')
-            .then(res => res.json())
+            .then(response => {
+                if (!response.ok) throw new Error('Erro ao carregar os temas');
+                return response.json();
+            })
             .then(data => setTopics(data))
-            .catch(err => console.error('Erro ao carregar temas', err));
+            .catch(err => setError(err.message));
     }, []);
 
-    // Quando o tema é selecionado, carrega os candidatos
     useEffect(() => {
-        if (selectedTopic) {
+        const fetchAllCandidates = async () => {
             setLoading(true);
-            fetch(`http://localhost:8080/api/applications/homologated-candidates/by-research-topic/${selectedTopic.id}`)
-                .then(res => res.json())
-                .then(data => {
-                    setCandidatos(data);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    setError('Erro ao carregar os candidatos');
-                    setLoading(false);
+            setError(null);
+            let allCandidatos = [];
+            try {
+                const results = await Promise.all(topics.map(topic => 
+                    fetch(`http://localhost:8080/api/applications/homologated-candidates/by-research-topic/${topic.id}`)
+                        .then(res => res.status === 204 ? [] : res.json().then(data => data.map(c => ({ ...c, topicName: topic.name }))))
+                        .catch(() => [])
+                ));
+                results.forEach(candList => {
+                    if (Array.isArray(candList)) allCandidatos = [...allCandidatos, ...candList];
                 });
+                setCandidatos(allCandidatos);
+            } catch (err) {
+                setError('Erro ao carregar os candidatos');
+            } finally {
+                setLoading(false);
+                if (typeof onSelectCandidate === 'function') onSelectCandidate(null);
+                if (typeof onViewCandidadeInfo === 'function') onViewCandidadeInfo(false);
+            }
+        };
+
+        const fetchByTopic = () => {
+            setLoading(true);
+            fetch(`http://localhost:8080/api/applications/homologated-candidates/by-research-topic/${selectedTopicId}`)
+                .then(response => {
+                    if (response.status === 204) return [];
+                    if (!response.ok) throw new Error('Erro ao carregar os candidatos');
+                    return response.json();
+                })
+                .then(data => {
+                    const topic = topics.find(t => t.id === selectedTopicId);
+                    const topicName = topic ? topic.name : 'Tema desconhecido';
+                    const candidatosComTema = (data || []).map(c => ({ ...c, topicName }));
+                    setCandidatos(candidatosComTema);
+                    setError(null);
+                })
+                .catch(error => {
+                    setCandidatos([]);
+                    setError(error.message);
+                })
+                .finally(() => {
+                    setLoading(false);
+                    if (typeof onSelectCandidate === 'function') onSelectCandidate(null);
+                    if (typeof onViewCandidadeInfo === 'function') onViewCandidadeInfo(false);
+                });
+        };
+
+        if (selectedTopicId === 'All') {
+            if (topics.length > 0) {
+                fetchAllCandidates();
+            }
+        } else {
+            fetchByTopic();
         }
-    }, [selectedTopic]);
+    }, [selectedTopicId, topics, onSelectCandidate, onViewCandidadeInfo]);
 
     return (
         <Card>
             <Card.Header className="d-flex justify-content-between align-items-center">
                 <h5>Candidatos</h5>
                 <Dropdown>
-                    <Dropdown.Toggle variant="primary" id="dropdown-topics">
-                        {selectedTopic ? selectedTopic.name : 'Selecione um tema'}
+                    <Dropdown.Toggle variant="primary" id="dropdown-themes" style={{ width: "400px", alignItems: "center", overflow: "hidden" }}>
+                        {selectedTheme === 'All' ? 'Todos os Temas' : selectedTheme}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => {
+                            setSelectedTheme('All');
+                            setSelectedTopicId('All');
+                        }}>Todos os Temas</Dropdown.Item>
                         {topics.map((topic) => (
                             <Dropdown.Item
                                 key={topic.id}
-                                onClick={() => setSelectedTopic(topic)}
+                                onClick={() => {
+                                    setSelectedTheme(topic.name);
+                                    setSelectedTopicId(topic.id);
+                                }}
                             >
                                 {topic.name}
                             </Dropdown.Item>
@@ -59,23 +111,25 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
                 ) : error ? (
                     <Alert variant="danger" className="text-center">{error}</Alert>
                 ) : candidatos.length === 0 ? (
-                    <Alert variant="info" className="text-center">Nenhum candidato encontrado para este tema.</Alert>
+                    <Alert variant="info" className="text-center">
+                        Nenhum candidato encontrado para este tema.
+                    </Alert>
                 ) : (
                     <ListGroup>
                         {candidatos.map((candidate, index) => (
                             <ListGroup.Item key={index} className="d-flex flex-column">
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <strong>{candidate.name}</strong>
+                                        <strong>{candidate.name || candidate.nome}</strong>
                                     </div>
                                     <div>
-                                        <Button 
+                                        <Button
                                             variant="info"
                                             size="sm"
                                             className="me-2"
                                             onClick={() => {
-                                                onViewCandidadeInfo(true)
-                                                onSelectCandidate(candidate)
+                                                onViewCandidadeInfo(true);
+                                                onSelectCandidate(candidate);
                                             }}>
                                             Detalhes
                                         </Button>
@@ -83,8 +137,8 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
                                             variant="primary"
                                             size="sm"
                                             onClick={() => {
-                                                onViewCandidadeInfo(false)
-                                                onSelectCandidate(candidate)
+                                                onViewCandidadeInfo(false);
+                                                onSelectCandidate(candidate);
                                             }}
                                         >
                                             Avaliar
@@ -92,7 +146,7 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
                                     </div>
                                 </div>
                                 <div className="mt-1 text-muted small">
-                                    {selectedTopic?.name}
+                                    {candidate.topicName || 'Tema não informado'}
                                 </div>
                             </ListGroup.Item>
                         ))}
