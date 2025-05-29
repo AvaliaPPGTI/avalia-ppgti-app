@@ -3,6 +3,7 @@ import { Card, Button, Alert, Spinner } from 'react-bootstrap';
 import FormularioAvaliacaoPP from './FormularioAvaliacaoPP';
 import FormularioEntrevista from './FormularioEntrevista';
 import FormularioCurriculo from './FormularioCurriculo';
+import { API_ENDPOINTS } from '../config'; 
 
 const AvaliacaoCandidato = ({ selectedCandidate }) => {
   const [activeEvaluationTab, setActiveEvaluationTab] = useState(null);
@@ -16,7 +17,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     if (selectedCandidate && selectedCandidate.id) {
       setLoadingApplicationId(true);
 
-      fetch(`http://localhost:8080/api/applications/by-candidate/${selectedCandidate.id}`)
+      fetch(API_ENDPOINTS.APLICATIONS_BY_CANDIDATE_ID(selectedCandidate.id))
         .then((response) => {
           if (!response.ok) throw new Error('Erro ao buscar application');
           return response.json();
@@ -49,7 +50,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
       evaluationDate: new Date().toISOString(),
     };
 
-    fetch('http://localhost:8080/api/stage-evaluations', {
+    fetch(API_ENDPOINTS.ALL_STAGE_EVALUATIONS, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -97,7 +98,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
         scoreValue: parseFloat(valores[campo]),
       }));
 
-    fetch(`http://localhost:8080/api/criterion-scores/evaluate/${stageEvaluationId}`, {
+    fetch(API_ENDPOINTS.CRITERION_SCORE_BY_STAGE_EVALUATION_ID(stageEvaluationId), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ scores }),

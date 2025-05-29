@@ -46,7 +46,7 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
 
         const fetchByTopic = () => {
             setLoading(true);
-            fetch(`http://localhost:8080/api/applications/homologated-candidates/by-research-topic/${selectedTopicId}`)
+                fetch(API_ENDPOINTS.HOMOLOGATED_CANDIDATES_BY_TOPIC(selectedTopicId))
                 .then(response => {
                     if (response.status === 204) return [];
                     if (!response.ok) throw new Error('Erro ao carregar os candidatos');
