@@ -1,52 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Dropdown, ListGroup, Alert } from 'react-bootstrap';
-import candidatosData from './candidatos.json';
 
-const ListagemCandidato = ({ candidatos, onSelectCandidate, onViewCandidadeInfo }) => {
-    const [selectedTheme, setSelectedTheme] = useState('All');
+const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
+    const [topics, setTopics] = useState([]); // guarda a lista de temas (id + nome)
+    const [selectedTopic, setSelectedTopic] = useState(null); // guarda o tema selecionado
+    const [candidatos, setCandidatos] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    // Extract unique themes
-    const themes = ['All', ...new Set(candidatosData.candidatos.map(c => c.tema))];
+    // Carrega os temas
+    useEffect(() => {
+        fetch('http://localhost:8080/api/research-topics/by-process/1')
+            .then(res => res.json())
+            .then(data => setTopics(data))
+            .catch(err => console.error('Erro ao carregar temas', err));
+    }, []);
 
-    // Filter candidates by selected theme
-    const filteredCandidates = selectedTheme === 'All'
-        ? candidatosData.candidatos
-        : candidatosData.candidatos.filter(c => c.tema === selectedTheme);
-
+    // Quando o tema é selecionado, carrega os candidatos
+    useEffect(() => {
+        if (selectedTopic) {
+            setLoading(true);
+            fetch(`http://localhost:8080/api/applications/homologated-candidates/by-research-topic/${selectedTopic.id}`)
+                .then(res => res.json())
+                .then(data => {
+                    setCandidatos(data);
+                    setLoading(false);
+                })
+                .catch(err => {
+                    setError('Erro ao carregar os candidatos');
+                    setLoading(false);
+                });
+        }
+    }, [selectedTopic]);
 
     return (
         <Card>
             <Card.Header className="d-flex justify-content-between align-items-center">
                 <h5>Candidatos</h5>
                 <Dropdown>
-                    <Dropdown.Toggle variant="primary" id="dropdown-themes" style={{ width: "400px", alignItems: "center", overflow: "hidden" }}>
-                        {selectedTheme === 'All' ? 'Todos os Temas' : selectedTheme}
+                    <Dropdown.Toggle variant="primary" id="dropdown-topics">
+                        {selectedTopic ? selectedTopic.name : 'Selecione um tema'}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        {themes.map((theme, index) => (
+                        {topics.map((topic) => (
                             <Dropdown.Item
-                                key={index}
-                                onClick={() => setSelectedTheme(theme)}
+                                key={topic.id}
+                                onClick={() => setSelectedTopic(topic)}
                             >
-                                {theme === 'All' ? 'Todos os Temas' : theme}
+                                {topic.name}
                             </Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
             </Card.Header>
             <Card.Body style={{ maxHeight: '80vh', overflowY: 'auto' }}>
-                {filteredCandidates.length === 0 ? (
-                    <Alert variant="info" className="text-center">
-                        Nenhum candidato encontrado para este tema.
-                    </Alert>
+                {loading ? (
+                    <Alert variant="secondary" className="text-center">Carregando...</Alert>
+                ) : error ? (
+                    <Alert variant="danger" className="text-center">{error}</Alert>
+                ) : candidatos.length === 0 ? (
+                    <Alert variant="info" className="text-center">Nenhum candidato encontrado para este tema.</Alert>
                 ) : (
                     <ListGroup>
-                        {filteredCandidates.map((candidate, index) => (
+                        {candidatos.map((candidate, index) => (
                             <ListGroup.Item key={index} className="d-flex flex-column">
-                                {/* Linha superior: Nome e botões */}
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <strong>{candidate.nome}</strong>
+                                        <strong>{candidate.name}</strong>
                                     </div>
                                     <div>
                                         <Button 
@@ -71,10 +91,8 @@ const ListagemCandidato = ({ candidatos, onSelectCandidate, onViewCandidadeInfo 
                                         </Button>
                                     </div>
                                 </div>
-
-                                {/* Linha inferior: Tema */}
                                 <div className="mt-1 text-muted small">
-                                    {candidate.tema}
+                                    {selectedTopic?.name}
                                 </div>
                             </ListGroup.Item>
                         ))}

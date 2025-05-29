@@ -9,10 +9,10 @@ const DetalhesCandidato = ({ selectedCandidate }) => {
         dataDeNascimento: '',
         cotista: '',
         modalidadeDaCota: '',
-        // anexo1: '',
-        // anexo2: '',
-        // anexo3: '',
-        // anexo4: ''
+        endereco: '',
+        numero: '',
+        complemento: '',
+        bairro: ''
     });
 
     const camposConfig = {
@@ -22,22 +22,26 @@ const DetalhesCandidato = ({ selectedCandidate }) => {
         dataDeNascimento: { label: 'Data de nascimento' },
         cotista: { label: 'É cotista' },
         modalidadeDaCota: { label: 'Modalidade da cota' },
-        // anexo1: { label: 'Anexo 1' },
-        // anexo2: { label: 'Anexo 2' },
-        // anexo3: { label: 'Anexo 3' },
-        // anexo4: { label: 'Anexo 4' }
+        endereco: { label: 'Endereço' },
+        numero: { label: 'Número' },
+        complemento: { label: 'Complemento' },
+        bairro: { label: 'Bairro' }
     };
 
     useEffect(() => {
         setValores({
-            nome: selectedCandidate.nome || '',
+            nome: selectedCandidate.nome || selectedCandidate.name || '',
             CPF: selectedCandidate.cpf || '',
             email: selectedCandidate.email || '',
-            dataDeNascimento: selectedCandidate.dataNascimento || '',
+            dataDeNascimento: selectedCandidate.dataNascimento || selectedCandidate.birthDate || '',
             cotista: selectedCandidate.cotista ? 'Sim' : 'Não' || '',
             modalidadeDaCota: selectedCandidate.cotista ? selectedCandidate.modalidadeCota : 'Não consta' || '',
-        })
-    }, [selectedCandidate])
+            endereco: selectedCandidate.address || '',
+            numero: selectedCandidate.addressNumber || '',
+            complemento: selectedCandidate.addressComplement || '',
+            bairro: selectedCandidate.addressNeighborhood || ''
+        });
+    }, [selectedCandidate]);
 
     return (
         <Card>
@@ -47,79 +51,22 @@ const DetalhesCandidato = ({ selectedCandidate }) => {
             <Card.Body>
                 <Form>
                     <Form.Group className="mb-3">
-                        <Row>
-                            <Col>
-                                <Form.Label className="mb-0"><h6><strong>{camposConfig['nome'].label}</strong></h6></Form.Label>
-                                <Form.Control
-                                    className="mb-3"
-                                    type="text"
-                                    step="1"
-                                    placeholder={' '}
-                                    value={valores['nome']}
-                                    readOnly={true}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Form.Label className="mb-0"><h6><strong>{camposConfig['CPF'].label}</strong></h6></Form.Label>
-                                <Form.Control
-                                    className="mb-3"
-                                    type="text"
-                                    step="1"
-                                    placeholder={' '}
-                                    value={valores['CPF']}
-                                    readOnly={true}
-                                />
-                            </Col>
-                            <Col>
-                                <Form.Label className="mb-0"><h6><strong>{camposConfig['dataDeNascimento'].label}</strong></h6></Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    step="1"
-                                    placeholder={' '}
-                                    value={valores['dataDeNascimento']}
-                                    readOnly={true}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Form.Label className="mb-0"><h6><strong>{camposConfig['email'].label}</strong></h6></Form.Label>
-                                <Form.Control
-                                    className="mb-3"
-                                    type="text"
-                                    step="1"
-                                    placeholder={' '}
-                                    value={valores['email']}
-                                    readOnly={true}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Form.Label className="mb-0"><h6><strong>{camposConfig['cotista'].label}</strong></h6></Form.Label>
-                                <Form.Control
-                                    className="mb-3"
-                                    type="text"
-                                    step="1"
-                                    placeholder={' '}
-                                    value={valores['cotista']}
-                                    readOnly={true}
-                                />
-                            </Col>
-                            <Col>
-                                <Form.Label className="mb-0"><h6><strong>{camposConfig['modalidadeDaCota'].label}</strong></h6></Form.Label>
-                                <Form.Control
-                                    className="mb-3"
-                                    type="text"
-                                    step="1"
-                                    placeholder={' '}
-                                    value={valores['modalidadeDaCota']}
-                                    readOnly={true}
-                                />
-                            </Col>
-                        </Row>
+                        {Object.keys(camposConfig).map((key, index) => (
+                            <Row key={index} className={index % 2 === 0 ? '' : 'mb-3'}>
+                                <Col>
+                                    <Form.Label className="mb-0">
+                                        <h6><strong>{camposConfig[key].label}</strong></h6>
+                                    </Form.Label>
+                                    <Form.Control
+                                        className="mb-3"
+                                        type="text"
+                                        placeholder=" "
+                                        value={valores[key]}
+                                        readOnly={true}
+                                    />
+                                </Col>
+                            </Row>
+                        ))}
                     </Form.Group>
                 </Form>
                 <Container>
