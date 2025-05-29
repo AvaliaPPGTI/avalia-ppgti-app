@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Dropdown, ListGroup, Alert } from 'react-bootstrap';
+import { API_ENDPOINTS } from '../config'; 
 
 const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
     const [selectedTheme, setSelectedTheme] = useState('All');
@@ -10,7 +11,7 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/research-topics/by-process/1')
+        fetch(API_ENDPOINTS.RESEARCH_TOPICS)
             .then(response => {
                 if (!response.ok) throw new Error('Erro ao carregar os temas');
                 return response.json();
@@ -26,7 +27,7 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
             let allCandidatos = [];
             try {
                 const results = await Promise.all(topics.map(topic => 
-                    fetch(`http://localhost:8080/api/applications/homologated-candidates/by-research-topic/${topic.id}`)
+                    fetch(API_ENDPOINTS.HOMOLOGATED_CANDIDATES_BY_TOPIC(topic.id))
                         .then(res => res.status === 204 ? [] : res.json().then(data => data.map(c => ({ ...c, topicName: topic.name }))))
                         .catch(() => [])
                 ));
