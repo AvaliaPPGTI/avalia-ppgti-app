@@ -1,18 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Alert, Card, Spinner } from 'react-bootstrap';
-import { API_ENDPOINTS } from '../config';
 
 const FormularioEntrevista = ({
   onSubmit,
   avaliacaoExistente: inicialAvaliacao,
   criterios = [],
 }) => {
-  const [emEdicao, setEmEdicao] = useState(false);
+  const [emEdicao, setEmEdicao] = useState(!inicialAvaliacao);
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
-  const [avaliacao, setAvaliacao] = useState(false);
+  const [avaliacao, setAvaliacao] = useState(!inicialAvaliacao);
   const [valores, setValores] = useState({});
   const [erros, setErros] = useState({});
-
   const [loading, setLoading] = useState(false);
 
   const calcularPontuacaoTotal = () => {
@@ -28,6 +26,8 @@ const FormularioEntrevista = ({
   }, [valores]);
 
   useEffect(() => {
+    setLoading(true);
+
     if (inicialAvaliacao) {
       const initialValues = {};
       const initialErrors = {};
@@ -38,10 +38,9 @@ const FormularioEntrevista = ({
 
       setValores(initialValues);
       setErros(initialErrors);
-      setPontuacaoTotal(
-        inicialAvaliacao?.totalStageScore || 0
-      );
+      setPontuacaoTotal(inicialAvaliacao?.totalStageScore || 0);
       setAvaliacao(false);
+      setEmEdicao(false); // avaliação existente -> começa bloqueado
     } else {
       const initialValues = {};
       const initialErrors = {};
@@ -52,8 +51,11 @@ const FormularioEntrevista = ({
 
       setValores(initialValues);
       setErros(initialErrors);
+      setPontuacaoTotal(0);
       setAvaliacao(true);
+      setEmEdicao(true); // 🔥 avaliação nova -> começa desbloqueado
     }
+
     setLoading(false);
   }, [inicialAvaliacao, criterios]);
 

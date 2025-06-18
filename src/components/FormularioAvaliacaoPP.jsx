@@ -1,23 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Alert, Card, Spinner } from 'react-bootstrap';
-import { API_ENDPOINTS } from '../config';
 
 const FormularioAvaliacaoPP = ({
   onSubmit,
   avaliacaoExistente: inicialAvaliacao,
-  stageEvaluationId,
-  processStageId,
   criterios = []
 }) => {
-  const [emEdicao, setEmEdicao] = useState(false);
+  const [emEdicao, setEmEdicao] = useState(!inicialAvaliacao);
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
-  const [avaliacao, setAvaliacao] = useState(false);
   const [valores, setValores] = useState({});
   const [erros, setErros] = useState({});
   const [loading, setLoading] = useState(!criterios.length);
 
   const calcularPontuacaoTotal = () => {
-    const total = Object.values(valores).reduce((sum, v) => sum + (parseFloat(v) || 0), 0);
+    const total = Object.values(valores).reduce(
+      (sum, v) => sum + (parseFloat(v) || 0),
+      0
+    );
     setPontuacaoTotal(total);
   };
 
@@ -26,35 +25,33 @@ const FormularioAvaliacaoPP = ({
   }, [valores]);
 
   useEffect(() => {
-    const inicializaCampos = () => {
-      const initialValues = {};
-      const initialErrors = {};
-      criterios.forEach(c => {
-        initialValues[c.id] = inicialAvaliacao?.notas?.[c.id] ?? '';
-        initialErrors[c.id] = false;
-      });
-      setValores(initialValues);
-      setErros(initialErrors);
-      setPontuacaoTotal(inicialAvaliacao?.pontuacaoTotal || 0);
-      setAvaliacao(!inicialAvaliacao);
-    };
-
-    if (criterios.length) {
-      inicializaCampos();
-      setLoading(false);
-    }
+    const initialValues = {};
+    const initialErrors = {};
+    criterios.forEach(c => {
+      const nota = inicialAvaliacao?.scores?.find(s => s.evaluationCriterionId === c.id)?.scoreValue;
+      initialValues[c.id] = nota ?? '';
+      initialErrors[c.id] = false;
+    });
+    setValores(initialValues);
+    setErros(initialErrors);
+    setPontuacaoTotal(inicialAvaliacao?.totalStageScore || 0);
+    setLoading(false);
   }, [inicialAvaliacao, criterios]);
 
   const handleChange = (id, value, max) => {
     const num = value === '' ? null : parseFloat(value);
     setValores(prev => ({ ...prev, [id]: value }));
 
-    const erro = value !== '' && (isNaN(num) || num < 0 || num > max);
+    const erro =
+      value !== '' &&
+      (isNaN(num) || num < 0 || num > max || !Number.isFinite(num));
+
     setErros(prev => ({ ...prev, [id]: erro }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const camposVazios = Object.values(valores).some(v => v === '');
     const camposComErro = Object.values(erros).some(e => e);
 
@@ -64,7 +61,7 @@ const FormularioAvaliacaoPP = ({
     }
 
     if (onSubmit) {
-      onSubmit(valores, avaliacao);
+      onSubmit(valores, !inicialAvaliacao);
     }
   };
 
@@ -78,7 +75,7 @@ const FormularioAvaliacaoPP = ({
 
   return (
     <Form onSubmit={handleSubmit}>
-      {criterios.map((crit) => (
+      {criterios.map(crit => (
         <Form.Group key={crit.id} className="mb-3">
           <Form.Label>{crit.description}</Form.Label>
           <Form.Control
@@ -112,7 +109,6 @@ const FormularioAvaliacaoPP = ({
         variant={emEdicao ? 'success' : 'primary'}
         onClick={(e) => {
           if (emEdicao) {
-            setAvaliacao(false);
             handleSubmit(e);
             setEmEdicao(false);
           } else {
