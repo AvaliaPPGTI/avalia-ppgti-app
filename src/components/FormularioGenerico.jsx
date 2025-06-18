@@ -5,9 +5,9 @@ const FormularioGenerico = ({
   onSubmit,
   avaliacaoExistente: inicialAvaliacao,
   criterios = [],
-  scoresExistentes = [],
   titulo = 'Formulário de Avaliação',
-  classificatorio = false
+  classificatorio = false,
+  scoresExistentes = []
 }) => {
   const [emEdicao, setEmEdicao] = useState(!inicialAvaliacao);
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
@@ -33,21 +33,14 @@ const FormularioGenerico = ({
 
     const preencherCampos = (lista) => {
       lista.forEach(c => {
-        let nota = null;
-
-        // Se tiver StageEvaluation com scores dentro
-        nota = inicialAvaliacao?.scores?.find(s => s.evaluationCriterionId === c.id)?.scoreValue;
-
-        // Se não, tenta pegar dos scoresExistentes (vindo da API /by-stage-evaluation/{id})
-        if (nota == null) {
-          nota = scoresExistentes?.find(s => s.evaluationCriterionId === c.id)?.scoreObtained;
-        }
+        const nota =
+          scoresExistentes?.find(s => s.evaluationCriterionId === c.id)?.scoreObtained ??
+          inicialAvaliacao?.scores?.find(s => s.evaluationCriterionId === c.id)?.scoreValue;
 
         if (c.leaf) {
           initialValues[c.id] = nota ?? '';
           initialErrors[c.id] = false;
         }
-
         if (c.children) preencherCampos(c.children);
       });
     };
@@ -83,7 +76,7 @@ const FormularioGenerico = ({
     }
 
     if (onSubmit) {
-      onSubmit(valores, !inicialAvaliacao);
+      onSubmit(valores, !inicialAvaliacao, pontuacaoTotal);
     }
   };
 

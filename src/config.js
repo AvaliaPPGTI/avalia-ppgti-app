@@ -23,4 +23,6 @@ export const API_ENDPOINTS = {
 
     GET_CRITERION_SCORES_BY_STAGE_EVALUATION: (stageEvaluationId) => 
         `${BASE_URL}/api/criterion-scores/by-stage-evaluation/${stageEvaluationId}`,  
+    UPDATE_STAGE_TOTAL_SCORE: (stageEvaluationId) => `/api/stage-evaluations/${stageEvaluationId}/total-score`,
+    CRITERION_SCORES_BY_STAGE_EVALUATION: (stageEvaluationId) => `/api/criterion-scores/by-stage-evaluation/${stageEvaluationId}`,
 };

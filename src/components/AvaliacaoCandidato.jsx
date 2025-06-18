@@ -137,11 +137,29 @@ const handleStageSelection = async (stage) => {
     };
 
     const enviarNotas = (stageEvalId) => {
-      return fetch(API_ENDPOINTS.GET_CRITERION_SCORES_BY_STAGE_EVALUATION_ID(stageEvalId), {
+      return fetch(API_ENDPOINTS.CRITERION_SCORE_BY_STAGE_EVALUATION_ID(stageEvalId), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ scores: scoresPayload }),
       });
+    };
+    const atualizarTotalScore = async (stageEvalId, totalScore) => {
+    try {
+      const response = await fetch(
+        `${API_ENDPOINTS.UPDATE_TOTAL_STAGE_SCORE(stageEvalId)}`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ totalStageScore: totalScore }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Erro ao atualizar totalStageScore');
+      }
+      return await response.json();
+      } catch (error) {
+        console.error('Erro ao atualizar totalStageScore:', error);
+      }
     };
 
     const executar = async () => {
@@ -153,6 +171,7 @@ const handleStageSelection = async (stage) => {
           setStageEvaluationId(id);
         }
         await enviarNotas(id);
+        await atualizarTotalScore
         alert('Pontuações enviadas com sucesso!');
       } catch (err) {
         console.error(err);
@@ -162,6 +181,8 @@ const handleStageSelection = async (stage) => {
 
     executar();
   };
+
+
 
   return (
     <Card>
