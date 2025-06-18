@@ -1,18 +1,21 @@
 import FormularioGenerico from './FormularioGenerico';
 
-const FormularioEntrevista = ({
+const FormularioAvaliacaoPP = ({
   onSubmit,
   avaliacaoExistente,
-  criterios = []
+  criterios = [],
+  scoresExistentes = []
 }) => {
   return (
     <FormularioGenerico
-      titulo="Avaliação da Entrevista"
+      titulo="Avaliação do Pré-Projeto"
+      classificatorio={false}
       onSubmit={onSubmit}
       avaliacaoExistente={avaliacaoExistente}
       criterios={criterios}
+      scoresExistentes={scoresExistentes}
     />
   );
 };
 
-export default FormularioEntrevista;
+export default FormularioAvaliacaoPP;

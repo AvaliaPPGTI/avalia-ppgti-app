@@ -3,7 +3,8 @@ import FormularioGenerico from './FormularioGenerico';
 const FormularioCurriculo = ({
   onSubmit,
   avaliacaoExistente,
-  criterios = []
+  criterios = [],
+  scoresExistentes = []
 }) => {
   return (
     <FormularioGenerico
@@ -12,6 +13,7 @@ const FormularioCurriculo = ({
       onSubmit={onSubmit}
       avaliacaoExistente={avaliacaoExistente}
       criterios={criterios}
+      scoresExistentes={scoresExistentes}
     />
   );
 };

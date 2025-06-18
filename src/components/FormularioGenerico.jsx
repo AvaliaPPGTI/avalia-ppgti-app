@@ -3,13 +3,13 @@ import { Form, Button, Alert, Card, Spinner } from 'react-bootstrap';
 
 const FormularioGenerico = ({
   onSubmit,
-  avaliacaoExistente,
+  avaliacaoExistente: inicialAvaliacao,
   criterios = [],
+  scoresExistentes = [],
   titulo = 'Formulário de Avaliação',
-  classificatorio = false,
-  scoresExistentes = []
+  classificatorio = false
 }) => {
-  const [emEdicao, setEmEdicao] = useState(!avaliacaoExistente);
+  const [emEdicao, setEmEdicao] = useState(!inicialAvaliacao);
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
   const [valores, setValores] = useState({});
   const [erros, setErros] = useState({});
@@ -33,22 +33,18 @@ const FormularioGenerico = ({
 
     const preencherCampos = (lista) => {
       lista.forEach(c => {
-        let nota = '';
+        let nota = null;
 
-        if (avaliacaoExistente) {
-          const found = avaliacaoExistente?.scores?.find(
-            s => s.evaluationCriterionId === c.id
-          );
-          nota = found?.scoreValue ?? '';
-        } else if (scoresExistentes.length > 0) {
-          const found = scoresExistentes?.find(
-            s => s.evaluationCriterionId === c.id
-          );
-          nota = found?.scoreObtained ?? '';
+        // Se tiver StageEvaluation com scores dentro
+        nota = inicialAvaliacao?.scores?.find(s => s.evaluationCriterionId === c.id)?.scoreValue;
+
+        // Se não, tenta pegar dos scoresExistentes (vindo da API /by-stage-evaluation/{id})
+        if (nota == null) {
+          nota = scoresExistentes?.find(s => s.evaluationCriterionId === c.id)?.scoreObtained;
         }
 
         if (c.leaf) {
-          initialValues[c.id] = nota;
+          initialValues[c.id] = nota ?? '';
           initialErrors[c.id] = false;
         }
 
@@ -60,12 +56,9 @@ const FormularioGenerico = ({
 
     setValores(initialValues);
     setErros(initialErrors);
-    setPontuacaoTotal(
-      avaliacaoExistente?.totalStageScore ??
-      scoresExistentes.reduce((sum, v) => sum + (v?.scoreObtained ?? 0), 0)
-    );
+    setPontuacaoTotal(inicialAvaliacao?.totalStageScore || 0);
     setLoading(false);
-  }, [avaliacaoExistente, criterios, scoresExistentes]);
+  }, [inicialAvaliacao, criterios, scoresExistentes]);
 
   const handleChange = (id, value, max) => {
     const num = value === '' ? null : parseFloat(value);
@@ -90,7 +83,7 @@ const FormularioGenerico = ({
     }
 
     if (onSubmit) {
-      onSubmit(valores, !avaliacaoExistente);
+      onSubmit(valores, !inicialAvaliacao);
     }
   };
 
