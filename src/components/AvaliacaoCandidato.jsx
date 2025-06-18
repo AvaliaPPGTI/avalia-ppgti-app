@@ -87,7 +87,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     const processStageId = processStageMap[selectedStage];
     const scores = Object.entries(valores).map(([criterioId, scoreValue]) => ({
       evaluationCriterionId: parseInt(criterioId),
-      scoreValue: parseFloat(scoreValue),
+      scoreObtained: parseFloat(scoreValue),
     }));
 
     const criarStageEvaluation = () => {
