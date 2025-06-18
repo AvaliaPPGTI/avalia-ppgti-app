@@ -25,4 +25,7 @@ export const API_ENDPOINTS = {
         `${BASE_URL}/api/criterion-scores/by-stage-evaluation/${stageEvaluationId}`,  
     UPDATE_STAGE_TOTAL_SCORE: (stageEvaluationId) => `/api/stage-evaluations/${stageEvaluationId}/total-score`,
     CRITERION_SCORES_BY_STAGE_EVALUATION: (stageEvaluationId) => `/api/criterion-scores/by-stage-evaluation/${stageEvaluationId}`,
+
+     RANKING_BY_STAGE: (processId, stageId) => 
+      `http://localhost:8080/api/ranking/process/${processId}/stage/${stageId}`,
 };

@@ -9,7 +9,12 @@ const FormularioGenerico = ({
   classificatorio = false,
   scoresExistentes = []
 }) => {
-  const [emEdicao, setEmEdicao] = useState(!inicialAvaliacao);
+  const [emEdicao, setEmEdicao] = useState(() => {
+    const temStageEvaluation = Boolean(inicialAvaliacao);
+    const temNotas = scoresExistentes && scoresExistentes.length > 0;
+    return !temStageEvaluation || !temNotas;
+  });
+
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
   const [valores, setValores] = useState({});
   const [erros, setErros] = useState({});
