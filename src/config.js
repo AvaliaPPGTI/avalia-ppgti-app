@@ -1,13 +1,23 @@
 const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
-//TODO: tornar o id do processo dinamico
+// TODO: tornar o id do processo dinâmico futuramente
 export const API_ENDPOINTS = {
-    RESEARCH_TOPICS: `${BASE_URL}/api/research-topics/by-process/3`,
+    RESEARCH_TOPICS: `${BASE_URL}/api/research-topics/by-process/1`,
+
+        EVALUATION_CRITERIA_BY_PROCESS_STAGE: (processStageId) =>
+        `${BASE_URL}/api/evaluation-criteria/by-process-stage/${processStageId}`,   
+    
     HOMOLOGATED_CANDIDATES_BY_TOPIC: (topicId) =>
         `${BASE_URL}/api/applications/homologated-candidates/by-research-topic/${topicId}`,
-    CRITERION_SCORE_BY_STAGE_EVALUATION_ID: (stageEvaluationId) =>
-                `${BASE_URL}/api/criterion-scores/evaluate/${stageEvaluationId}`,
+    
+    APLICATIONS_BY_CANDIDATE_ID: (candidateId) => 
+        `${BASE_URL}/api/applications/by-candidate/${candidateId}`,
+    
     ALL_STAGE_EVALUATIONS: `${BASE_URL}/api/stage-evaluations`,
-    APLICATIONS_BY_CANDIDATE_ID: (selectedCandidateId) => 
-         `${BASE_URL}/api/applications/by-candidate/${selectedCandidateId}`,
+    
+    FIND_STAGE_EVALUATION: (applicationId, processStageId, committeeMemberId) =>
+        `${BASE_URL}/api/stage-evaluations/find?applicationId=${applicationId}&processStageId=${processStageId}&committeeMemberId=${committeeMemberId}`,
+    
+    CRITERION_SCORE_BY_STAGE_EVALUATION_ID: (stageEvaluationId) =>
+        `${BASE_URL}/api/criterion-scores/evaluate/${stageEvaluationId}`,
 };

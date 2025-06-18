@@ -1,165 +1,162 @@
 import { useState, useEffect } from 'react';
-import { Form, Button, Alert, Card } from 'react-bootstrap';
+import { Form, Button, Alert, Card, Spinner } from 'react-bootstrap';
+import { API_ENDPOINTS } from '../config';
 
-const FormularioEntrevista = ({ onSubmit, avaliacaoExistente: inicialAvaliacao  }) => {
-  // Estados para controle de edição e notas
+const FormularioEntrevista = ({
+  onSubmit,
+  avaliacaoExistente: inicialAvaliacao,
+  criterios = [],
+}) => {
   const [emEdicao, setEmEdicao] = useState(false);
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
-  const [status, setStatus] = useState('');
-  const [avalicao, setAvaliacao] = useState(false);
+  const [avaliacao, setAvaliacao] = useState(false);
+  const [valores, setValores] = useState({});
+  const [erros, setErros] = useState({});
 
-  const [valores, setValores] = useState({
-    afericao: '',
-    dominio: '',
-    adequacao: ''
-  });
+  const [loading, setLoading] = useState(false);
 
-  const [erros, setErros] = useState({
-    afericao: false,
-    dominio: false,
-    adequacao: false
-  });
-
-  const camposConfig = {
-    afericao: { label: 'Aferição/defesa da proposta de pré-projeto de pesquisa de mestrado', min: 0, max: 30 },
-    dominio: { label: 'Demonstração de domínio de conhecimentos no tema pretendido', min: 0, max: 30 },
-    adequacao: { label: 'Adequação do candidato para a execução da pesquisa de mestrado', min: 0, max: 40 }
-  };
-
-   // Função para calcular a pontuação total
   const calcularPontuacaoTotal = () => {
-    let total = 0;
-    Object.keys(valores).forEach(campo => {
-      const valor = valores[campo];
-      if (valor !== '' && !isNaN(valor)) {
-        total += parseInt(valor);
-      }
-    });
+    const total = Object.values(valores).reduce(
+      (sum, v) => sum + (parseFloat(v) || 0),
+      0
+    );
     setPontuacaoTotal(total);
-    setStatus(total >= 70 ? '✅ Aprovado' : '❌ Reprovado');
   };
 
-   // Efeito para recalcular a pontuação sempre que os valores mudarem
   useEffect(() => {
     calcularPontuacaoTotal();
   }, [valores]);
 
-  // Mock de dados para simulação
-  const mockAvaliacao = {
-    notas: {
-     afericao: 20,
-    dominio: 20,
-    adequacao: 30
-    },
-    pontuacaoTotal: 70,
-    status: 'Aprovado'
-  };
-
-  // Preenche os campos se houver avaliação existente
   useEffect(() => {
     if (inicialAvaliacao) {
-      setValores(inicialAvaliacao.notas || {});
-      setPontuacaoTotal(inicialAvaliacao.pontuacaoTotal || 0);
-      setStatus(inicialAvaliacao.status || '');
+      const initialValues = {};
+      const initialErrors = {};
+      criterios.forEach(c => {
+        initialValues[c.id] = inicialAvaliacao?.scores?.find(s => s.evaluationCriterionId === c.id)?.scoreValue || '';
+        initialErrors[c.id] = false;
+      });
+
+      setValores(initialValues);
+      setErros(initialErrors);
+      setPontuacaoTotal(
+        inicialAvaliacao?.totalStageScore || 0
+      );
       setAvaliacao(false);
     } else {
-      // mock da avaliação so para teste, remover depois
-      setValores(mockAvaliacao.notas);
-      setPontuacaoTotal(mockAvaliacao.pontuacaoTotal);
-      setStatus(mockAvaliacao.status);
+      const initialValues = {};
+      const initialErrors = {};
+      criterios.forEach(c => {
+        initialValues[c.id] = '';
+        initialErrors[c.id] = false;
+      });
 
+      setValores(initialValues);
+      setErros(initialErrors);
       setAvaliacao(true);
-      //libera o formulário senão tiver uma avaliação existes
-      // setEmEdicao(true);
     }
-  }, [inicialAvaliacao]);
+    setLoading(false);
+  }, [inicialAvaliacao, criterios]);
 
-  const handleChange = (campo, valor) => {
-    const num = valor === '' ? null : parseInt(valor);
-    
-    setValores(prev => ({ ...prev, [campo]: valor }));
-    
-    const erro = valor !== '' && (
-      isNaN(num) || 
-      num < camposConfig[campo].min || 
-      num > camposConfig[campo].max ||
-      !Number.isInteger(num)
-    );
-    setErros(prev => ({ ...prev, [campo]: erro }));
+  const handleChange = (id, value, max) => {
+    const num = value === '' ? null : parseFloat(value);
+
+    setValores(prev => ({ ...prev, [id]: value }));
+
+    const erro =
+      value !== '' &&
+      (isNaN(num) ||
+        num < 0 ||
+        num > max ||
+        !Number.isFinite(num));
+
+    setErros(prev => ({ ...prev, [id]: erro }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    const camposVazios = Object.keys(valores).some(campo => valores[campo] === '');
-    const camposComErro = Object.values(erros).some(erro => erro);
-    
+
+    const camposVazios = Object.values(valores).some(v => v === '');
+    const camposComErro = Object.values(erros).some(e => e);
+
     if (camposVazios || camposComErro) {
       alert('Por favor, preencha todos os campos corretamente antes de enviar.');
       return;
     }
-    
-   // Chama a função de submit passada como prop
+
     if (onSubmit) {
-      onSubmit(valores, avalicao);
-      console.log(valores, avalicao);
+      onSubmit(valores, avaliacao);
     }
   };
 
+  if (loading) {
+    return (
+      <div className="text-center">
+        <Spinner animation="border" size="sm" /> Carregando critérios...
+      </div>
+    );
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
-      {Object.keys(camposConfig).map((campo) => (
-        <Form.Group key={campo} className="mb-3">
-          <Form.Label>{camposConfig[campo].label}</Form.Label>
-          <Form.Control
-            type="number"
-            min={camposConfig[campo].min}
-            max={camposConfig[campo].max}
-            step="1"
-            placeholder={`${camposConfig[campo].min} - ${camposConfig[campo].max}`}
-            value={valores[campo]}
-            onChange={(e) => handleChange(campo, e.target.value)}
-            isInvalid={erros[campo]}
-            disabled={!emEdicao}
-            onBlur={(e) => {
-              if (e.target.value > camposConfig[campo].max) {
-                e.target.value = camposConfig[campo].max;
-              }
-              handleChange(campo, e.target.value);
-            }}
-          />
-          <Form.Control.Feedback type="invalid">
-            Digite um valor inteiro entre {camposConfig[campo].min} e {camposConfig[campo].max}.
-          </Form.Control.Feedback>
-        </Form.Group>
+      {criterios.map((criterio) => (
+        <Card key={criterio.id} className="mb-3">
+          <Card.Header>
+            <strong>{criterio.description}</strong> (máx {criterio.maximumScore})
+          </Card.Header>
+          <Card.Body>
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="number"
+                min={0}
+                max={criterio.maximumScore}
+                step="0.01"
+                placeholder={`0 - ${criterio.maximumScore}`}
+                value={valores[criterio.id] ?? ''}
+                onChange={(e) =>
+                  handleChange(
+                    criterio.id,
+                    e.target.value,
+                    criterio.maximumScore
+                  )
+                }
+                isInvalid={erros[criterio.id]}
+                disabled={!emEdicao}
+              />
+              <Form.Control.Feedback type="invalid">
+                Digite um valor entre 0 e {criterio.maximumScore}.
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Card.Body>
+        </Card>
       ))}
 
-       <Card className="mb-3">
+      <Card className="mb-3">
         <Card.Body>
           <Card.Text>
-            <strong>Pontuação Total:</strong> {pontuacaoTotal} / 100
+            <strong>Pontuação Total:</strong> {pontuacaoTotal}
             <br />
-            <strong>Status:</strong> {pontuacaoTotal >= 70 ? '✅ Aprovado' : '❌ Reprovado'}
+            <strong>Status:</strong>{' '}
+            {pontuacaoTotal >= 70 ? '✅ Aprovado' : '❌ Reprovado'}
           </Card.Text>
         </Card.Body>
       </Card>
 
-       <Button
+      <Button
         variant={emEdicao ? 'success' : 'primary'}
         onClick={(e) => {
           if (emEdicao) {
             setAvaliacao(false);
-            handleSubmit(e); // Envia o formulário
+            handleSubmit(e);
             setEmEdicao(false);
           } else {
-            setEmEdicao(true); // Habilita a edição
+            setEmEdicao(true);
           }
         }}
       >
         {emEdicao ? 'Salvar Avaliação' : 'Editar Avaliação'}
       </Button>
 
-      {Object.values(erros).some(erro => erro) && (
+      {Object.values(erros).some(e => e) && (
         <Alert variant="danger" className="mt-3">
           Corrija os campos destacados em vermelho antes de enviar.
         </Alert>
