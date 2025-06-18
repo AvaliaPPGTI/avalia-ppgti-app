@@ -8,7 +8,7 @@ const FormularioCurriculo = ({
   return (
     <FormularioGenerico
       titulo="Análise Curricular"
-      classificatorio={true} // Currículo é etapa classificatória, sem status de aprovado/reprovado
+      classificatorio={true}
       onSubmit={onSubmit}
       avaliacaoExistente={avaliacaoExistente}
       criterios={criterios}

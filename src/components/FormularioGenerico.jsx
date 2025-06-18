@@ -3,12 +3,13 @@ import { Form, Button, Alert, Card, Spinner } from 'react-bootstrap';
 
 const FormularioGenerico = ({
   onSubmit,
-  avaliacaoExistente: inicialAvaliacao,
+  avaliacaoExistente,
   criterios = [],
   titulo = 'Formulário de Avaliação',
-  classificatorio = false
+  classificatorio = false,
+  scoresExistentes = []
 }) => {
-  const [emEdicao, setEmEdicao] = useState(!inicialAvaliacao);
+  const [emEdicao, setEmEdicao] = useState(!avaliacaoExistente);
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
   const [valores, setValores] = useState({});
   const [erros, setErros] = useState({});
@@ -32,11 +33,25 @@ const FormularioGenerico = ({
 
     const preencherCampos = (lista) => {
       lista.forEach(c => {
-        const nota = inicialAvaliacao?.scores?.find(s => s.evaluationCriterionId === c.id)?.scoreValue;
+        let nota = '';
+
+        if (avaliacaoExistente) {
+          const found = avaliacaoExistente?.scores?.find(
+            s => s.evaluationCriterionId === c.id
+          );
+          nota = found?.scoreValue ?? '';
+        } else if (scoresExistentes.length > 0) {
+          const found = scoresExistentes?.find(
+            s => s.evaluationCriterionId === c.id
+          );
+          nota = found?.scoreObtained ?? '';
+        }
+
         if (c.leaf) {
-          initialValues[c.id] = nota ?? '';
+          initialValues[c.id] = nota;
           initialErrors[c.id] = false;
         }
+
         if (c.children) preencherCampos(c.children);
       });
     };
@@ -45,9 +60,12 @@ const FormularioGenerico = ({
 
     setValores(initialValues);
     setErros(initialErrors);
-    setPontuacaoTotal(inicialAvaliacao?.totalStageScore || 0);
+    setPontuacaoTotal(
+      avaliacaoExistente?.totalStageScore ??
+      scoresExistentes.reduce((sum, v) => sum + (v?.scoreObtained ?? 0), 0)
+    );
     setLoading(false);
-  }, [inicialAvaliacao, criterios]);
+  }, [avaliacaoExistente, criterios, scoresExistentes]);
 
   const handleChange = (id, value, max) => {
     const num = value === '' ? null : parseFloat(value);
@@ -72,7 +90,7 @@ const FormularioGenerico = ({
     }
 
     if (onSubmit) {
-      onSubmit(valores, !inicialAvaliacao);
+      onSubmit(valores, !avaliacaoExistente);
     }
   };
 

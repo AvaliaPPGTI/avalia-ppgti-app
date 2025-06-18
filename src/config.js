@@ -20,4 +20,7 @@ export const API_ENDPOINTS = {
     
     CRITERION_SCORE_BY_STAGE_EVALUATION_ID: (stageEvaluationId) =>
         `${BASE_URL}/api/criterion-scores/evaluate/${stageEvaluationId}`,
+
+    GET_CRITERION_SCORES_BY_STAGE_EVALUATION: (stageEvaluationId) => 
+        `${BASE_URL}/api/criterion-scores/by-stage-evaluation/${stageEvaluationId}`,  
 };
