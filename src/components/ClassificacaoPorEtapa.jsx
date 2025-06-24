@@ -3,49 +3,37 @@ import { Table, Tabs, Tab, Dropdown, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { API_ENDPOINTS } from '../config'; // 🔥 Ajuste para seu arquivo de config
 
-const mockApiResponse = [
-    { nome: 'Alice Almeida', cota: true, nota: 80, status: 'Aprovado', linhaPesquisa: 'Linha A', temaPesquisa: 'Tema 1', etapa: 'preProjeto' },
-    { nome: 'Alice Al', cota: true, nota: 60, status: 'Reprovado', linhaPesquisa: 'Linha A', temaPesquisa: 'Tema 2', etapa: 'preProjeto' },
-    { nome: 'Bernardo Barbosa', cota: false, nota: 75, status: 'Reprovado', linhaPesquisa: 'Linha A', temaPesquisa: 'Tema 1', etapa: 'preProjeto' },
-    { nome: 'Carla Correia', cota: true, nota: 60, status: 'Reprovado', linhaPesquisa: 'Linha B', temaPesquisa: 'Tema 3', etapa: 'preProjeto' },
-    { nome: 'Alice Almeida', cota: true, nota: 85, status: 'Aprovado', linhaPesquisa: 'Linha A', temaPesquisa: 'Tema 1', etapa: 'entrevista' },
-    { nome: 'Bernardo Barbosa', cota: false, nota: 70, status: 'Aprovado', linhaPesquisa: 'Linha A', temaPesquisa: 'Tema 1', etapa: 'entrevista' },
-    { nome: 'Alice Almeida', cota: true, nota: 90, status: 'Classificado', linhaPesquisa: 'Linha A', temaPesquisa: 'Tema 1', etapa: 'curriculo' },
-    { nome: 'Bernardo Barbosa', cota: false, nota: 88, status: 'Classificado', linhaPesquisa: 'Linha A', temaPesquisa: 'Tema 1', etapa: 'curriculo' },
-];
-
-const processApiData = (apiData) => {
-    const stages = ['preProjeto', 'entrevista', 'curriculo'];
-    const structuredData = {};
-
-    stages.forEach((stage) => {
-        const stageData = apiData.filter((item) => item.etapa === stage);
-        const groupedByLineAndTheme = stageData.reduce((acc, item) => {
-            const key = `${item.linhaPesquisa}|${item.temaPesquisa}`;
-            if (!acc[key]) {
-                acc[key] = {
-                    linhaPesquisa: item.linhaPesquisa,
-                    temaPesquisa: item.temaPesquisa,
-                    candidatos: [],
-                };
-            }
-            acc[key].candidatos.push({
-                nome: item.nome,
-                cota: item.cota,
-                nota: item.nota,
-                status: item.status,
-            });
-            return acc;
-        }, {});
-
-        structuredData[stage] = Object.values(groupedByLineAndTheme);
-    });
-
-    return structuredData;
+const processStageMap = {
+    preProjeto: 2,
+    entrevista: 3,
+    curriculo: 1,
 };
 
-const ClassificacaoPorEtapa = () => {
+const processApiData = (apiData, etapa) => {
+    const groupedByLineAndTheme = apiData.reduce((acc, item) => {
+        const key = `${item.researchLineName}|${item.researchTopicName}`;
+        if (!acc[key]) {
+            acc[key] = {
+                linhaPesquisa: item.researchLineName,
+                temaPesquisa: item.researchTopicName,
+                candidatos: [],
+            };
+        }
+        acc[key].candidatos.push({
+            nome: item.candidateName,
+            cota: item.quotaName ? true : false,
+            nota: item.totalStageScore,
+            status: item.isEliminatedInStage ? 'Reprovado' : 'Aprovado',
+        });
+        return acc;
+    }, {});
+
+    return Object.values(groupedByLineAndTheme);
+};
+
+const ClassificacaoPorEtapa = ({ processId = 1 }) => {
     const [activeTab, setActiveTab] = useState('preProjeto');
     const [data, setData] = useState({});
     const [filters, setFilters] = useState({
@@ -54,9 +42,23 @@ const ClassificacaoPorEtapa = () => {
         status: '',
     });
 
+    const fetchData = async (etapa) => {
+        const stageId = processStageMap[etapa];
+        const url = `${API_ENDPOINTS.RANKING_BY_STAGE(processId, stageId)}`;
+
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('Erro ao buscar ranking');
+            const json = await res.json();
+            const processed = processApiData(json, etapa);
+            setData(prev => ({ ...prev, [etapa]: processed }));
+        } catch (error) {
+            console.error(`Erro carregando dados da etapa ${etapa}:`, error);
+        }
+    };
+
     useEffect(() => {
-        const structuredData = processApiData(mockApiResponse);
-        setData(structuredData);
+        Object.keys(processStageMap).forEach(etapa => fetchData(etapa));
     }, []);
 
     const handleFilterChange = (filterType, value) => {
@@ -66,94 +68,78 @@ const ClassificacaoPorEtapa = () => {
     const getFilteredData = (stageData) => {
         if (!stageData) return [];
         return stageData
-            .filter((item) =>
-                filters.linhaPesquisa ? item.linhaPesquisa === filters.linhaPesquisa : true
-            )
-            .filter((item) =>
-                filters.temaPesquisa ? item.temaPesquisa === filters.temaPesquisa : true
-            )
-            .map((item) => ({
+            .filter(item => filters.linhaPesquisa ? item.linhaPesquisa === filters.linhaPesquisa : true)
+            .filter(item => filters.temaPesquisa ? item.temaPesquisa === filters.temaPesquisa : true)
+            .map(item => ({
                 ...item,
-                candidatos: item.candidatos.filter((candidato) =>
-                    filters.status ? candidato.status === filters.status : true
-                ),
+                candidatos: item.candidatos.filter(c => filters.status ? c.status === filters.status : true)
             }))
-            .filter((item) => item.candidatos.length > 0);
+            .filter(item => item.candidatos.length > 0);
     };
 
-   const exportToPDF = () => {
-    const doc = new jsPDF();
-    let yPos = 20; // Posição vertical inicial
+    const exportToPDF = () => {
+        const doc = new jsPDF();
+        let yPos = 20;
+        const filteredData = getFilteredData(data[activeTab]);
 
-    // Obtém os dados filtrados da aba ativa
-    const filteredData = getFilteredData(data[activeTab]);
-
-    // Verifica se há dados para exportar
-    if (filteredData.length === 0) {
-        alert('Nenhum dado filtrado para exportar!');
-        return;
-    }
-
-    // Adiciona título da etapa
-    doc.setFontSize(16);
-    doc.text(`Etapa: ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`, 10, yPos);
-    yPos += 10;
-
-    // Adiciona informações sobre os filtros aplicados
-    doc.setFontSize(10);
-    let filterInfo = 'Filtros aplicados: ';
-    if (filters.linhaPesquisa) filterInfo += `Linha: ${filters.linhaPesquisa} `;
-    if (filters.temaPesquisa) filterInfo += `Tema: ${filters.temaPesquisa} `;
-    if (filters.status) filterInfo += `Status: ${filters.status}`;
-    
-    if (filterInfo !== 'Filtros aplicados: ') {
-        doc.text(filterInfo, 10, yPos);
-        yPos += 7;
-    }
-
-    filteredData.forEach((group) => {
-        // Verifica se precisa de nova página
-        if (yPos > 250) {
-            doc.addPage();
-            yPos = 20;
+        if (filteredData.length === 0) {
+            alert('Nenhum dado filtrado para exportar!');
+            return;
         }
 
-        // Adiciona informações do grupo
-        doc.setFontSize(12);
-        doc.text(`Linha de Pesquisa: ${group.linhaPesquisa}`, 10, yPos);
-        yPos += 7;
-        doc.text(`Tema de Pesquisa: ${group.temaPesquisa}`, 10, yPos);
+        doc.setFontSize(16);
+        doc.text(`Etapa: ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`, 10, yPos);
         yPos += 10;
 
-        // Prepara dados da tabela
-        const tableData = group.candidatos.map((candidato) => [
-            candidato.nome,
-            candidato.cota ? 'Sim' : 'Não',
-            candidato.nota.toString(),
-            candidato.status
-        ]);
+        doc.setFontSize(10);
+        let filterInfo = 'Filtros aplicados: ';
+        if (filters.linhaPesquisa) filterInfo += `Linha: ${filters.linhaPesquisa} `;
+        if (filters.temaPesquisa) filterInfo += `Tema: ${filters.temaPesquisa} `;
+        if (filters.status) filterInfo += `Status: ${filters.status}`;
 
-        // Adiciona tabela
-        autoTable(doc, {
-            startY: yPos,
-            head: [['Nome', 'Cota', 'Nota', 'Status']],
-            body: tableData,
-            margin: { top: 10 },
-            styles: { overflow: 'linebreak', cellWidth: 'wrap' },
-            columnStyles: {
-                0: { cellWidth: 'auto' },
-                1: { cellWidth: 20 },
-                2: { cellWidth: 20 },
-                3: { cellWidth: 'auto' }
+        if (filterInfo !== 'Filtros aplicados: ') {
+            doc.text(filterInfo, 10, yPos);
+            yPos += 7;
+        }
+
+        filteredData.forEach(group => {
+            if (yPos > 250) {
+                doc.addPage();
+                yPos = 20;
             }
+
+            doc.setFontSize(12);
+            doc.text(`Linha de Pesquisa: ${group.linhaPesquisa}`, 10, yPos);
+            yPos += 7;
+            doc.text(`Tema de Pesquisa: ${group.temaPesquisa}`, 10, yPos);
+            yPos += 10;
+
+            const tableData = group.candidatos.map(c => [
+                c.nome,
+                c.cota ? 'Sim' : 'Não',
+                c.nota.toString(),
+                c.status,
+            ]);
+
+            autoTable(doc, {
+                startY: yPos,
+                head: [['Nome', 'Cota', 'Nota', 'Status']],
+                body: tableData,
+                margin: { top: 10 },
+                styles: { overflow: 'linebreak', cellWidth: 'wrap' },
+                columnStyles: {
+                    0: { cellWidth: 'auto' },
+                    1: { cellWidth: 20 },
+                    2: { cellWidth: 20 },
+                    3: { cellWidth: 'auto' }
+                }
+            });
+
+            yPos = doc.lastAutoTable.finalY + 10;
         });
 
-        // Atualiza posição Y para a próxima tabela
-        yPos = doc.lastAutoTable.finalY + 10;
-    });
-
-    doc.save('candidatos_filtrados.pdf');
-};
+        doc.save('candidatos_filtrados.pdf');
+    };
 
     const renderTable = (stageData) => {
         return stageData.map((item, index) => (
@@ -170,12 +156,12 @@ const ClassificacaoPorEtapa = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {item.candidatos.map((candidato, idx) => (
+                        {item.candidatos.map((c, idx) => (
                             <tr key={idx}>
-                                <td>{candidato.nome}</td>
-                                <td>{candidato.cota ? 'Sim' : 'Não'}</td>
-                                <td>{candidato.nota}</td>
-                                <td>{candidato.status}</td>
+                                <td>{c.nome}</td>
+                                <td>{c.cota ? 'Sim' : 'Não'}</td>
+                                <td>{c.nota}</td>
+                                <td>{c.status}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -186,10 +172,10 @@ const ClassificacaoPorEtapa = () => {
 
     const uniqueOptions = (key) => {
         const options = new Set();
-        Object.values(data).forEach((stage) => {
-            stage.forEach((item) => {
+        Object.values(data).forEach(stage => {
+            stage?.forEach(item => {
                 if (key === 'status') {
-                    item.candidatos.forEach((candidato) => options.add(candidato[key]));
+                    item.candidatos.forEach(c => options.add(c[key]));
                 } else {
                     options.add(item[key]);
                 }
@@ -208,10 +194,8 @@ const ClassificacaoPorEtapa = () => {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item eventKey="">Todos</Dropdown.Item>
-                        {uniqueOptions('linhaPesquisa').map((option, index) => (
-                            <Dropdown.Item key={index} eventKey={option}>
-                                {option}
-                            </Dropdown.Item>
+                        {uniqueOptions('linhaPesquisa').map((opt, idx) => (
+                            <Dropdown.Item key={idx} eventKey={opt}>{opt}</Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
@@ -222,10 +206,8 @@ const ClassificacaoPorEtapa = () => {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item eventKey="">Todos</Dropdown.Item>
-                        {uniqueOptions('temaPesquisa').map((option, index) => (
-                            <Dropdown.Item key={index} eventKey={option}>
-                                {option}
-                            </Dropdown.Item>
+                        {uniqueOptions('temaPesquisa').map((opt, idx) => (
+                            <Dropdown.Item key={idx} eventKey={opt}>{opt}</Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
@@ -236,16 +218,13 @@ const ClassificacaoPorEtapa = () => {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item eventKey="">Todos</Dropdown.Item>
-                        {uniqueOptions('status').map((option, index) => (
-                            <Dropdown.Item key={index} eventKey={option}>
-                                {option}
-                            </Dropdown.Item>
+                        {uniqueOptions('status').map((opt, idx) => (
+                            <Dropdown.Item key={idx} eventKey={opt}>{opt}</Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
 
-              <Button variant="success" onClick={exportToPDF}>Exportar PDF</Button>
-
+                <Button variant="success" onClick={exportToPDF}>Exportar PDF</Button>
             </div>
 
             <Tabs
