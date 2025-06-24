@@ -44,6 +44,17 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     }
   }, [selectedCandidate?.id]);
 
+  useEffect(() => {
+  // Sempre que mudar de candidato, limpa os estados relacionados à avaliação anterior
+  setActiveEvaluationTab(null);
+  setSelectedStage(null);
+  setStageEvaluation(null);
+  setStageEvaluationId(null);
+  setCriterios([]);
+  setScores([]);
+  setIsNovaAvaliacao(false);
+}, [selectedCandidate?.id]);
+
   const handleStageSelection = async (stage) => {
     if (!applicationId) return;
 
