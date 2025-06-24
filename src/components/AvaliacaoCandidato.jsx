@@ -165,6 +165,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
         }
         await enviarNotas(id);
         await calcularTotalScore(id);
+        await handleStageSelection(selectedStage);
         alert('Pontuações enviadas com sucesso!');
       } catch (err) {
         console.error(err);
