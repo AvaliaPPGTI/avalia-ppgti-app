@@ -16,6 +16,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
   const [criterios, setCriterios] = useState([]);
   const [scores, setScores] = useState([]);
   const [selectedStage, setSelectedStage] = useState(null);
+  const [isNovaAvaliacao, setIsNovaAvaliacao] = useState(false);
 
   const processStageMap = {
     resume: 1,
@@ -63,7 +64,12 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
       const criteriosData = await criteriosRes.json();
       setCriterios(criteriosData);
 
-      if (res.status === 404) return;
+      if (res.status === 404) {
+        setIsNovaAvaliacao(true);
+        return;
+      } else {
+        setIsNovaAvaliacao(false);
+      }
 
       if (!res.ok) throw new Error('Erro ao buscar Stage Evaluation');
 
@@ -221,6 +227,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
                     onSubmit={enviarScores}
                     onRefresh={recarregarStageEvaluation}
                     avaliacaoExistente={stageEvaluation}
+                    isNovaAvaliacao={isNovaAvaliacao}
                     criterios={criterios}
                     scoresExistentes={scores}
                   />

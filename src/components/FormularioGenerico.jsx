@@ -4,19 +4,18 @@ import { Form, Button, Alert, Card, Spinner } from 'react-bootstrap';
 const FormularioGenerico = ({
   onSubmit,
   onRefresh,
-  avaliacaoExistente: inicialAvaliacao,
+  avaliacaoExistente: inicialAvaliacao, //TODO: remover
+  isNovaAvaliacao,
   criterios = [],
   titulo = 'Formulário de Avaliação',
   classificatorio = false,
   scoresExistentes = []
 }) => {
-  const [emEdicao, setEmEdicao] = useState(() => {
-    const temStageEvaluation = Boolean(inicialAvaliacao);
-    const temNotas = scoresExistentes && scoresExistentes.length > 0;
-    return !temStageEvaluation || !temNotas;
-  });
+const [emEdicao, setEmEdicao] = useState(() => {
+  return isNovaAvaliacao;
+});
 
-  const isNovaAvaliacao = !inicialAvaliacao;
+  // const isNovaAvaliacao = !inicialAvaliacao;
 
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
   const [valores, setValores] = useState({});
