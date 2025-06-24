@@ -23,7 +23,6 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     interview: 3,
   };
 
-  // ✅ Buscar aplicação do candidato
   useEffect(() => {
     if (selectedCandidate?.id) {
       setLoadingApplicationId(true);
@@ -44,72 +43,52 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     }
   }, [selectedCandidate?.id]);
 
-  // ✅ Função para buscar notas existentes
-  const buscarNotasExistentes = async (stageEvalId) => {
+  const handleStageSelection = async (stage) => {
+    if (!applicationId) return;
+
+    const processStageId = processStageMap[stage];
+    setSelectedStage(stage);
+    setActiveEvaluationTab(stage);
+    setCriterios([]);
+    setStageEvaluation(null);
+    setStageEvaluationId(null);
+    setScores([]);
+
     try {
-      const res = await fetch(API_ENDPOINTS.CRITERION_SCORES_BY_STAGE_EVALUATION(stageEvalId));
-      if (res.status === 204) return [];
-      if (!res.ok) throw new Error('Erro ao buscar notas existentes');
-      return await res.json();
+      const urlFind = `${API_ENDPOINTS.ALL_STAGE_EVALUATIONS}/find?applicationId=${applicationId}&processStageId=${processStageId}&committeeMemberId=1`;
+      const res = await fetch(urlFind);
+
+      const criteriosRes = await fetch(API_ENDPOINTS.EVALUATION_CRITERIA_BY_PROCESS_STAGE(processStageId));
+      if (!criteriosRes.ok) throw new Error('Erro ao buscar critérios');
+      const criteriosData = await criteriosRes.json();
+      setCriterios(criteriosData);
+
+      if (res.status === 404) return;
+
+      if (!res.ok) throw new Error('Erro ao buscar Stage Evaluation');
+
+      const stageEval = await res.json();
+      setStageEvaluationId(stageEval.id);
+      setStageEvaluation(stageEval);
+
+      const scoresRes = await fetch(
+        `${API_ENDPOINTS.GET_CRITERION_SCORES_BY_STAGE_EVALUATION(stageEval.id)}`
+      );
+
+      if (scoresRes.status === 204) {
+        setScores([]);
+      } else if (scoresRes.ok) {
+        const scoresData = await scoresRes.json();
+        setScores(scoresData);
+      } else {
+        throw new Error('Erro ao buscar notas');
+      }
     } catch (error) {
-      console.error('Erro ao buscar notas:', error);
-      return [];
+      console.error('Erro ao buscar dados da avaliação:', error);
+      alert('Erro ao carregar dados da avaliação. Verifique o console.');
     }
   };
 
-const handleStageSelection = async (stage) => {
-  if (!applicationId) return;
-
-  const processStageId = processStageMap[stage];
-  setSelectedStage(stage);
-  setActiveEvaluationTab(stage);
-  setCriterios([]);
-  setStageEvaluation(null);
-  setStageEvaluationId(null);
-  setScores([]);
-
-  try {
-    const urlFind = `${API_ENDPOINTS.ALL_STAGE_EVALUATIONS}/find?applicationId=${applicationId}&processStageId=${processStageId}&committeeMemberId=1`;
-    const res = await fetch(urlFind);
-
-    const criteriosRes = await fetch(API_ENDPOINTS.EVALUATION_CRITERIA_BY_PROCESS_STAGE(processStageId));
-    if (!criteriosRes.ok) throw new Error('Erro ao buscar critérios');
-    const criteriosData = await criteriosRes.json();
-    setCriterios(criteriosData);
-
-    if (res.status === 404) {
-      // Não existe StageEvaluation, então não busca notas, fica só com os critérios.
-      return;
-    }
-
-    if (!res.ok) throw new Error('Erro ao buscar Stage Evaluation');
-
-    const stageEval = await res.json();
-    setStageEvaluationId(stageEval.id);
-    setStageEvaluation(stageEval);
-
-    const scoresRes = await fetch(
-      `${API_ENDPOINTS.GET_CRITERION_SCORES_BY_STAGE_EVALUATION(stageEval.id)}`
-    );
-
-    if (scoresRes.status === 204) {
-      // Sem notas lançadas ainda, apenas carrega os critérios.
-      setScores([]);
-    } else if (scoresRes.ok) {
-      const scoresData = await scoresRes.json();
-      setScores(scoresData);
-    } else {
-      throw new Error('Erro ao buscar notas');
-    }
-
-  } catch (error) {
-    console.error('Erro ao buscar dados da avaliação:', error);
-    alert('Erro ao carregar dados da avaliação. Verifique o console.');
-  }
-};
-
-
-  // ✅ Enviar notas
   const enviarScores = (valores, isNew) => {
     const processStageId = processStageMap[selectedStage];
 
@@ -143,22 +122,19 @@ const handleStageSelection = async (stage) => {
         body: JSON.stringify({ scores: scoresPayload }),
       });
     };
-    const atualizarTotalScore = async (stageEvalId, totalScore) => {
-    try {
-      const response = await fetch(
-        `${API_ENDPOINTS.UPDATE_TOTAL_STAGE_SCORE(stageEvalId)}`,
-        {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ totalStageScore: totalScore }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error('Erro ao atualizar totalStageScore');
-      }
-      return await response.json();
+
+    const calcularTotalScore = async (stageEvalId) => {
+      try {
+        const response = await fetch(
+          `${API_ENDPOINTS.CALCULATE_TOTAL_STAGE_SCORE(stageEvalId)}`,
+          {
+            method: 'POST',
+          }
+        );
+        if (!response.ok) throw new Error('Erro ao calcular totalStageScore');
+        return await response.json();
       } catch (error) {
-        console.error('Erro ao atualizar totalStageScore:', error);
+        console.error('Erro ao calcular totalStageScore:', error);
       }
     };
 
@@ -171,7 +147,7 @@ const handleStageSelection = async (stage) => {
           setStageEvaluationId(id);
         }
         await enviarNotas(id);
-        await atualizarTotalScore
+        await calcularTotalScore(id);
         alert('Pontuações enviadas com sucesso!');
       } catch (err) {
         console.error(err);
@@ -182,7 +158,9 @@ const handleStageSelection = async (stage) => {
     executar();
   };
 
-
+  const recarregarStageEvaluation = () => {
+    handleStageSelection(selectedStage);
+  };
 
   return (
     <Card>
@@ -231,6 +209,7 @@ const handleStageSelection = async (stage) => {
                 {activeEvaluationTab === 'preProject' && (
                   <FormularioAvaliacaoPP
                     onSubmit={enviarScores}
+                    onRefresh={recarregarStageEvaluation}
                     avaliacaoExistente={stageEvaluation}
                     criterios={criterios}
                     scoresExistentes={scores}
@@ -240,6 +219,7 @@ const handleStageSelection = async (stage) => {
                 {activeEvaluationTab === 'interview' && (
                   <FormularioEntrevista
                     onSubmit={enviarScores}
+                    onRefresh={recarregarStageEvaluation}
                     avaliacaoExistente={stageEvaluation}
                     criterios={criterios}
                     scoresExistentes={scores}
@@ -249,6 +229,7 @@ const handleStageSelection = async (stage) => {
                 {activeEvaluationTab === 'resume' && (
                   <FormularioCurriculo
                     onSubmit={enviarScores}
+                    onRefresh={recarregarStageEvaluation}
                     avaliacaoExistente={stageEvaluation}
                     criterios={criterios}
                     scoresExistentes={scores}

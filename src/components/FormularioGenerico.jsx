@@ -3,6 +3,7 @@ import { Form, Button, Alert, Card, Spinner } from 'react-bootstrap';
 
 const FormularioGenerico = ({
   onSubmit,
+  onRefresh,
   avaliacaoExistente: inicialAvaliacao,
   criterios = [],
   titulo = 'Formulário de Avaliação',
@@ -14,6 +15,8 @@ const FormularioGenerico = ({
     const temNotas = scoresExistentes && scoresExistentes.length > 0;
     return !temStageEvaluation || !temNotas;
   });
+
+  const isNovaAvaliacao = !inicialAvaliacao;
 
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
   const [valores, setValores] = useState({});
@@ -81,14 +84,18 @@ const FormularioGenerico = ({
     }
 
     if (onSubmit) {
-      onSubmit(valores, !inicialAvaliacao, pontuacaoTotal);
+      onSubmit(valores, isNovaAvaliacao, pontuacaoTotal);
+    }
+
+    if (onRefresh) {
+      onRefresh();
     }
   };
 
   const renderCriterion = (criterio) => {
     if (criterio.leaf) {
       return (
-        <Form.Group key={criterio.id} className="mb-3 ms-3">
+        <Form.Group key={criterio.id} className="mb-3">
           <Form.Label>{criterio.description}</Form.Label>
           <Form.Control
             type="number"
@@ -133,44 +140,57 @@ const FormularioGenerico = ({
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h5 className="mb-4">{titulo}</h5>
+      <div className="ms-3">
+        <h5 className="mb-4">{titulo}</h5>
 
-      {criterios.map(criterio => renderCriterion(criterio))}
+        {criterios.map(criterio => renderCriterion(criterio))}
 
-      <Card className="mb-3">
-        <Card.Body>
-          <Card.Text>
-            <strong>Pontuação Total:</strong> {pontuacaoTotal}
-            <br />
-            <strong>Status:</strong>{' '}
-            {classificatorio
-              ? 'Etapa somente classificatória'
-              : pontuacaoTotal >= 70
-              ? '✅ Aprovado'
-              : '❌ Reprovado'}
-          </Card.Text>
-        </Card.Body>
-      </Card>
+        <Card className="mb-3">
+          <Card.Body>
+            <Card.Text>
+              <strong>Pontuação Total:</strong> {pontuacaoTotal}
+              <br />
+              <strong>Status:</strong>{' '}
+              {classificatorio
+                ? 'Etapa somente classificatória'
+                : pontuacaoTotal >= 70
+                ? '✅ Aprovado'
+                : '❌ Reprovado'}
+            </Card.Text>
+          </Card.Body>
+        </Card>
 
-      <Button
-        variant={emEdicao ? 'success' : 'primary'}
-        onClick={(e) => {
-          if (emEdicao) {
-            handleSubmit(e);
-            setEmEdicao(false);
-          } else {
-            setEmEdicao(true);
-          }
-        }}
-      >
-        {emEdicao ? 'Salvar Avaliação' : 'Editar Avaliação'}
-      </Button>
+        {isNovaAvaliacao ? (
+          <Button
+            variant="success"
+            onClick={(e) => {
+              handleSubmit(e);
+            }}
+          >
+            Salvar Avaliação
+          </Button>
+        ) : (
+          <Button
+            variant={emEdicao ? 'success' : 'primary'}
+            onClick={(e) => {
+              if (emEdicao) {
+                handleSubmit(e);
+                setEmEdicao(false);
+              } else {
+                setEmEdicao(true);
+              }
+            }}
+          >
+            {emEdicao ? 'Salvar Edição' : 'Editar Avaliação'}
+          </Button>
+        )}
 
-      {Object.values(erros).some(e => e) && (
-        <Alert variant="danger" className="mt-3">
-          Corrija os campos destacados em vermelho antes de enviar.
-        </Alert>
-      )}
+        {Object.values(erros).some(e => e) && (
+          <Alert variant="danger" className="mt-3">
+            Corrija os campos destacados em vermelho antes de enviar.
+          </Alert>
+        )}
+      </div>
     </Form>
   );
 };

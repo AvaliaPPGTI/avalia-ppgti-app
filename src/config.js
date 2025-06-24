@@ -24,22 +24,24 @@ export const API_ENDPOINTS = {
     GET_CRITERION_SCORES_BY_STAGE_EVALUATION: (stageEvaluationId) => 
         `${BASE_URL}/api/criterion-scores/by-stage-evaluation/${stageEvaluationId}`,  
 
-    UPDATE_STAGE_TOTAL_SCORE: (stageEvaluationId) => `/api/stage-evaluations/${stageEvaluationId}/total-score`,
+    UPDATE_STAGE_TOTAL_SCORE: (stageEvaluationId) => `${BASE_URL}/api/stage-evaluations/${stageEvaluationId}/total-score`,
 
-    CRITERION_SCORES_BY_STAGE_EVALUATION: (stageEvaluationId) => `/api/criterion-scores/by-stage-evaluation/${stageEvaluationId}`,
+    CRITERION_SCORES_BY_STAGE_EVALUATION: (stageEvaluationId) => `${BASE_URL}/api/criterion-scores/by-stage-evaluation/${stageEvaluationId}`,
 
     RANKING_BY_STAGE: (processId, stageId) => 
-      `http://localhost:8080/api/ranking/process/${processId}/stage/${stageId}`,
+      `${BASE_URL}/api/ranking/process/${processId}/stage/${stageId}`,
 
     RANKING_BY_LINE: (processId, stageId, researchLineId) => 
-      `http://localhost:8080/api/ranking/process/${processId}/stage/${stageId}/line/${researchLineId}`,
+      `${BASE_URL}/api/ranking/process/${processId}/stage/${stageId}/line/${researchLineId}`,
 
     RANKING_BY_TOPIC: (processId, stageId, researchTopicId) => 
-      `http://localhost:8080/api/ranking/process/${processId}/stage/${stageId}/topic/${researchTopicId}`,
+      `${BASE_URL}/api/ranking/process/${processId}/stage/${stageId}/topic/${researchTopicId}`,
 
     RANKING_BY_STATUS: (processId, stageId, status) => 
-      `http://localhost:8080/api/ranking/process/${processId}/stage/${stageId}/status/${status}`,
+      `${BASE_URL}/api/ranking/process/${processId}/stage/${stageId}/status/${status}`,
 
     RANKING_GERAL: (processId) =>
-        `http://localhost:8080/api/ranking/generate/process/${processId}`,
+        `${BASE_URL}/api/ranking/generate/process/${processId}`,
+
+    CALCULATE_TOTAL_STAGE_SCORE: (stageEvalId) => `${BASE_URL}/api/stage-evaluations/${stageEvalId}/calculate-total-score`,
 };
