@@ -54,6 +54,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     setStageEvaluation(null);
     setStageEvaluationId(null);
     setScores([]);
+    setIsNovaAvaliacao(false);
 
     try {
       const urlFind = `${API_ENDPOINTS.ALL_STAGE_EVALUATIONS}/find?applicationId=${applicationId}&processStageId=${processStageId}&committeeMemberId=1`;
@@ -67,8 +68,6 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
       if (res.status === 404) {
         setIsNovaAvaliacao(true);
         return;
-      } else {
-        setIsNovaAvaliacao(false);
       }
 
       if (!res.ok) throw new Error('Erro ao buscar Stage Evaluation');
@@ -76,6 +75,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
       const stageEval = await res.json();
       setStageEvaluationId(stageEval.id);
       setStageEvaluation(stageEval);
+      setIsNovaAvaliacao(false);
 
       const scoresRes = await fetch(
         `${API_ENDPOINTS.GET_CRITERION_SCORES_BY_STAGE_EVALUATION(stageEval.id)}`
@@ -217,6 +217,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
                     onSubmit={enviarScores}
                     onRefresh={recarregarStageEvaluation}
                     avaliacaoExistente={stageEvaluation}
+                    isNovaAvaliacao={isNovaAvaliacao}
                     criterios={criterios}
                     scoresExistentes={scores}
                   />
@@ -238,6 +239,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
                     onSubmit={enviarScores}
                     onRefresh={recarregarStageEvaluation}
                     avaliacaoExistente={stageEvaluation}
+                    isNovaAvaliacao={isNovaAvaliacao}
                     criterios={criterios}
                     scoresExistentes={scores}
                   />

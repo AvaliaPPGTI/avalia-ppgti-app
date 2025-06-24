@@ -11,11 +11,8 @@ const FormularioGenerico = ({
   classificatorio = false,
   scoresExistentes = []
 }) => {
-const [emEdicao, setEmEdicao] = useState(() => {
-  return isNovaAvaliacao;
-});
-
-  // const isNovaAvaliacao = !inicialAvaliacao;
+  const [estadoInternoDeEdicao, setEstadoInternoDeEdicao] = useState(false);
+  const emEdicao = isNovaAvaliacao ? true : estadoInternoDeEdicao;
 
   const [pontuacaoTotal, setPontuacaoTotal] = useState(0);
   const [valores, setValores] = useState({});
@@ -107,7 +104,7 @@ const [emEdicao, setEmEdicao] = useState(() => {
               handleChange(criterio.id, e.target.value, criterio.maximumScore)
             }
             isInvalid={erros[criterio.id]}
-            disabled={!emEdicao}
+            disabled={!isNovaAvaliacao && !emEdicao}
           />
           <Form.Control.Feedback type="invalid">
             Digite um valor entre 0 e {criterio.maximumScore}.
@@ -174,9 +171,9 @@ const [emEdicao, setEmEdicao] = useState(() => {
             onClick={(e) => {
               if (emEdicao) {
                 handleSubmit(e);
-                setEmEdicao(false);
+                setEstadoInternoDeEdicao(false);
               } else {
-                setEmEdicao(true);
+                setEstadoInternoDeEdicao(true);
               }
             }}
           >
