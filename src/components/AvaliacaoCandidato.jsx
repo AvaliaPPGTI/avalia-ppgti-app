@@ -19,7 +19,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
   const [isNovaAvaliacao, setIsNovaAvaliacao] = useState(false);
 
   const getAuthHeaders = () => {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       return token ? { Authorization: `Bearer ${token}` } : {};
   };
 

@@ -29,7 +29,7 @@ const LoginForm = ({ onLogin }) => {
       const data = await response.json();
 
       if (response.ok && data.token) {
-        sessionStorage.setItem('token', data.token); // salva o token no sessionStorage
+        localStorage.setItem('token', data.token); // salva o token no localStorage
         onLogin?.(); // callback para atualizar o estado de login
       } else {
         setErro(data.message || 'Erro ao tentar logar.');

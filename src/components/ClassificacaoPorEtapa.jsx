@@ -36,7 +36,7 @@ const processApiData = (apiData, etapa) => {
 
 const ClassificacaoPorEtapa = ({ processId = 1 }) => {
     const getAuthHeaders = () => {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       return token ? { Authorization: `Bearer ${token}` } : {};
     };
 

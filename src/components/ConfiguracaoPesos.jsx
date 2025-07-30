@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from '../config';
 
 // Função auxiliar para obter o token de autenticação
 const getAuthHeaders = () => {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
