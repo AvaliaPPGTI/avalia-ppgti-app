@@ -22,17 +22,22 @@ const LoginForm = ({ onLogin }) => {
       const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // mantém JSESSIONID se necessário
+        credentials: 'include',
         body: JSON.stringify({ ifRegistration, password })
       });
 
-      const data = await response.json();
-
-      if (response.ok && data.token) {
-        localStorage.setItem('token', data.token); // salva o token no localStorage
-        onLogin?.(); // callback para atualizar o estado de login
+      if (response.status === 401) {
+        setErro('Usuário ou senha inválidos');
+      } else if (!response.ok) {
+        setErro('Erro na conexão com o servidor.');
       } else {
-        setErro(data.message || 'Erro ao tentar logar.');
+        const data = await response.json();
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          onLogin?.();
+        } else {
+          setErro('Resposta inválida do servidor.');
+        }
       }
     } catch (err) {
       setErro('Erro na conexão com o servidor.');
@@ -44,7 +49,7 @@ const LoginForm = ({ onLogin }) => {
   return (
     <Form onSubmit={handleLogin} className="mx-auto" style={{ maxWidth: '400px', marginTop: '80px' }}>
       <Card className="p-4">
-        <h4 className="mb-3 text-center">Login</h4>
+        <h4 className="mb-3 text-center">AvaliaPPGTI Login</h4>
 
         <Form.Group className="mb-3">
           <Form.Label>Usuário (IF Registration)</Form.Label>
@@ -52,7 +57,7 @@ const LoginForm = ({ onLogin }) => {
             type="text"
             value={ifRegistration}
             onChange={(e) => setIfRegistration(e.target.value)}
-            placeholder="Digite seu registro"
+            placeholder="Digite seu usuário"
             required
           />
         </Form.Group>
@@ -70,7 +75,7 @@ const LoginForm = ({ onLogin }) => {
 
         {erro && <Alert variant="danger">{erro}</Alert>}
 
-        <Button variant="primary" type="submit" disabled={loading} className="w-100">
+        <Button variant="primary" type="submit" disabled={loading || !ifRegistration || !password} className="w-100">
           {loading ? <><Spinner size="sm" animation="border" /> Entrando...</> : 'Entrar'}
         </Button>
       </Card>
