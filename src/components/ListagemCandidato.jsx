@@ -10,8 +10,17 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const getAuthHeaders = () => {
+        const token = sessionStorage.getItem('token');
+        return token ? { Authorization: `Bearer ${token}` } : {};
+    };
+    
     useEffect(() => {
-        fetch(API_ENDPOINTS.RESEARCH_TOPICS)
+        fetch(API_ENDPOINTS.RESEARCH_TOPICS, {
+            headers: {
+                ...getAuthHeaders()
+            }
+        })
             .then(response => {
                 if (!response.ok) throw new Error('Erro ao carregar os temas');
                 return response.json();
@@ -27,7 +36,11 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
             let allCandidatos = [];
             try {
                 const results = await Promise.all(topics.map(topic => 
-                    fetch(API_ENDPOINTS.HOMOLOGATED_CANDIDATES_BY_TOPIC(topic.id))
+                    fetch(API_ENDPOINTS.HOMOLOGATED_CANDIDATES_BY_TOPIC(topic.id), {
+                            headers: {
+                                ...getAuthHeaders()
+                            }
+                        })
                         .then(res => res.status === 204 ? [] : res.json().then(data => data.map(c => ({ ...c, topicName: topic.name }))))
                         .catch(() => [])
                 ));
@@ -46,7 +59,11 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
 
         const fetchByTopic = () => {
             setLoading(true);
-                fetch(API_ENDPOINTS.HOMOLOGATED_CANDIDATES_BY_TOPIC(selectedTopicId))
+                fetch(API_ENDPOINTS.HOMOLOGATED_CANDIDATES_BY_TOPIC(selectedTopicId), {
+                        headers: {
+                            ...getAuthHeaders()
+                        }
+                    })
                 .then(response => {
                     if (response.status === 204) return [];
                     if (!response.ok) throw new Error('Erro ao carregar os candidatos');

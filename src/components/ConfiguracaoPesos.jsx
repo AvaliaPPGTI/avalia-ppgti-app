@@ -3,22 +3,18 @@ import { Container, Card, Form, Button, Spinner, Alert, Row, Col, Table } from '
 import { API_ENDPOINTS } from '../config';
 
 // Função auxiliar para obter o token de autenticação
-const getAuthToken = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user ? user.accessToken : null;
+const getAuthHeaders = () => {
+    const token = sessionStorage.getItem('token');
+    return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
 // Função genérica para chamadas à API
 const apiFetch = async (url, options = {}) => {
-    const token = getAuthToken();
     const headers = {
         'Content-Type': 'application/json',
         ...options.headers,
+        ...getAuthHeaders()
     };
-
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-    }
 
     const response = await fetch(url, { ...options, headers });
 

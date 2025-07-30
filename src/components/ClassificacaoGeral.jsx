@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Accordion, Spinner, Alert } from 'react-bootstrap';
+import { Table, Button, Spinner, Alert } from 'react-bootstrap';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
@@ -12,11 +12,23 @@ const STAGE_IDS = {
     entrevista: 3,
 };
 
+const getAuthHeaders = () => {
+    const token = sessionStorage.getItem('token');
+    return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 const fetchStageData = async (processId, stageId) => {
     try {
-        const response = await fetch(API_ENDPOINTS.RANKING_BY_STAGE(processId, stageId));
+        const response = await fetch(API_ENDPOINTS.RANKING_BY_STAGE(processId, stageId), {
+            headers: {
+                ...getAuthHeaders()
+            }
+        });
+        if (response.status === 204) return [];
         if (!response.ok) throw new Error('Falha ao buscar dados da API.');
-        return await response.json();
+
+        const text = await response.text();
+        return text ? JSON.parse(text) : [];
     } catch (error) {
         console.error(`Erro ao buscar dados da etapa ${stageId}:`, error);
         throw error;
@@ -26,7 +38,11 @@ const fetchStageData = async (processId, stageId) => {
 const fetchAndMergeRankingData = async (processId) => {
     try {
         const [finalScoreRes, curriculoData, preProjetoData, entrevistaData] = await Promise.all([
-            fetch(API_ENDPOINTS.GET_RANKING(processId)),
+            fetch(API_ENDPOINTS.GET_RANKING(processId), {
+                headers: {
+                    ...getAuthHeaders()
+                }
+            }),
             fetchStageData(processId, STAGE_IDS.curriculo),
             fetchStageData(processId, STAGE_IDS.preProjeto),
             fetchStageData(processId, STAGE_IDS.entrevista),
@@ -136,14 +152,17 @@ const ClassificacaoGeral = ({ processId = 1 }) => {
         };
 
         fetchVacancies();
-    }, []);
+    }, [processId]);
 
     const handleUpdateRanking = async () => {
         try {
             setLoading(true);
             const response = await fetch(API_ENDPOINTS.GENERATE_RANKING(processId), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    ...getAuthHeaders()
+                 },
             });
 
 

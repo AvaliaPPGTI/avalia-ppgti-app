@@ -1,7 +1,7 @@
-import React from 'react';
+import LoginForm from './LoginForm';
 
-const InterfaceLogin = () => {
-  return <h2>Login</h2>;
+const InterfaceLogin = ({ onLogin }) => {
+  return <LoginForm onLogin={onLogin} />;
 };
 
 export default InterfaceLogin;

@@ -18,6 +18,11 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
   const [selectedStage, setSelectedStage] = useState(null);
   const [isNovaAvaliacao, setIsNovaAvaliacao] = useState(false);
 
+  const getAuthHeaders = () => {
+      const token = sessionStorage.getItem('token');
+      return token ? { Authorization: `Bearer ${token}` } : {};
+  };
+
   const processStageMap = {
     resume: 1,
     preProject: 2,
@@ -27,7 +32,11 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
   useEffect(() => {
     if (selectedCandidate?.id) {
       setLoadingApplicationId(true);
-      fetch(API_ENDPOINTS.APLICATIONS_BY_CANDIDATE_ID(selectedCandidate.id))
+      fetch(API_ENDPOINTS.APLICATIONS_BY_CANDIDATE_ID(selectedCandidate.id), {
+            headers: {
+                ...getAuthHeaders()
+            }
+        })
         .then(res => {
           if (!res.ok) throw new Error('Erro ao buscar aplicação');
           return res.json();
@@ -69,9 +78,17 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
 
     try {
       const urlFind = `${API_ENDPOINTS.ALL_STAGE_EVALUATIONS}/find?applicationId=${applicationId}&processStageId=${processStageId}&committeeMemberId=1`;
-      const res = await fetch(urlFind);
+      const res = await fetch(urlFind, {
+                            headers: {
+                                ...getAuthHeaders()
+                            }
+                        });
 
-      const criteriosRes = await fetch(API_ENDPOINTS.EVALUATION_CRITERIA_BY_PROCESS_STAGE(processStageId));
+      const criteriosRes = await fetch(API_ENDPOINTS.EVALUATION_CRITERIA_BY_PROCESS_STAGE(processStageId), {
+                            headers: {
+                                ...getAuthHeaders()
+                            }
+                        });
       if (!criteriosRes.ok) throw new Error('Erro ao buscar critérios');
       const criteriosData = await criteriosRes.json();
       setCriterios(criteriosData);
@@ -90,7 +107,11 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
 
       const scoresRes = await fetch(
         `${API_ENDPOINTS.GET_CRITERION_SCORES_BY_STAGE_EVALUATION(stageEval.id)}`
-      );
+      , {
+          headers: {
+              ...getAuthHeaders()
+          }
+      })
 
       if (scoresRes.status === 204) {
         setScores([]);
@@ -124,8 +145,11 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
 
       return fetch(API_ENDPOINTS.ALL_STAGE_EVALUATIONS, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
+        headers: {
+            ...getAuthHeaders(),
+            'Content-Type': 'application/json' 
+        }
       }).then(res => {
         if (!res.ok) throw new Error('Erro ao criar Stage Evaluation');
         return res.json();
@@ -135,8 +159,11 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     const enviarNotas = (stageEvalId) => {
       return fetch(API_ENDPOINTS.CRITERION_SCORE_BY_STAGE_EVALUATION_ID(stageEvalId), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ scores: scoresPayload }),
+        headers: {
+          ...getAuthHeaders(),
+          'Content-Type': 'application/json' 
+        }
       });
     };
 
@@ -146,6 +173,9 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
           `${API_ENDPOINTS.CALCULATE_TOTAL_STAGE_SCORE(stageEvalId)}`,
           {
             method: 'POST',
+            headers: {
+              ...getAuthHeaders()
+            }
           }
         );
         if (!response.ok) throw new Error('Erro ao calcular totalStageScore');

@@ -35,6 +35,11 @@ const processApiData = (apiData, etapa) => {
 };
 
 const ClassificacaoPorEtapa = ({ processId = 1 }) => {
+    const getAuthHeaders = () => {
+      const token = sessionStorage.getItem('token');
+      return token ? { Authorization: `Bearer ${token}` } : {};
+    };
+
     const [activeTab, setActiveTab] = useState('preProjeto');
     const [data, setData] = useState({});
     const [filters, setFilters] = useState({
@@ -48,7 +53,11 @@ const ClassificacaoPorEtapa = ({ processId = 1 }) => {
         const url = `${API_ENDPOINTS.RANKING_BY_STAGE(processId, stageId)}`;
 
         try {
-            const res = await fetch(url);
+            const res = await fetch(url, {
+                            headers: {
+                                ...getAuthHeaders()
+                            }
+                        });
             if (!res.ok) throw new Error('Erro ao buscar ranking');
             const json = await res.json();
             const processed = processApiData(json, etapa);
