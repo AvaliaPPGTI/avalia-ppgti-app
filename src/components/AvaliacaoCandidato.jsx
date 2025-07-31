@@ -17,10 +17,12 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
   const [scores, setScores] = useState([]);
   const [selectedStage, setSelectedStage] = useState(null);
   const [isNovaAvaliacao, setIsNovaAvaliacao] = useState(false);
+  const [observacao, setObservacao] = useState(null);
+
 
   const getAuthHeaders = () => {
-      const token = localStorage.getItem('token');
-      return token ? { Authorization: `Bearer ${token}` } : {};
+    const token = localStorage.getItem('token');
+    return token ? { Authorization: `Bearer ${token}` } : {};
   };
 
   const processStageMap = {
@@ -29,14 +31,15 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     interview: 3,
   };
 
+
   useEffect(() => {
     if (selectedCandidate?.id) {
       setLoadingApplicationId(true);
       fetch(API_ENDPOINTS.APLICATIONS_BY_CANDIDATE_ID(selectedCandidate.id), {
-            headers: {
-                ...getAuthHeaders()
-            }
-        })
+        headers: {
+          ...getAuthHeaders()
+        }
+      })
         .then(res => {
           if (!res.ok) throw new Error('Erro ao buscar aplicação');
           return res.json();
@@ -54,15 +57,27 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
   }, [selectedCandidate?.id]);
 
   useEffect(() => {
-  // Sempre que mudar de candidato, limpa os estados relacionados à avaliação anterior
-  setActiveEvaluationTab(null);
-  setSelectedStage(null);
-  setStageEvaluation(null);
-  setStageEvaluationId(null);
-  setCriterios([]);
-  setScores([]);
-  setIsNovaAvaliacao(false);
-}, [selectedCandidate?.id]);
+    // Sempre que mudar de candidato, limpa os estados relacionados à avaliação anterior
+    setActiveEvaluationTab(null);
+    setSelectedStage(null);
+    setStageEvaluation(null);
+    setStageEvaluationId(null);
+    setCriterios([]);
+    setScores([]);
+    setIsNovaAvaliacao(false);
+    setObservacao('');
+  }, [selectedCandidate?.id]);
+
+  useEffect(() => {
+    if (stageEvaluation?.observations != null) {
+      const obs = stageEvaluation.observations.trim();
+      setObservacao(obs || '');
+      console.log('Observação inicial:', obs || '');
+    } else {
+      setObservacao('');
+      console.log('Observação inicial: <nenhuma>');
+    }
+  }, [stageEvaluation]);
 
   const handleStageSelection = async (stage) => {
     if (!applicationId) return;
@@ -75,26 +90,30 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     setStageEvaluationId(null);
     setScores([]);
     setIsNovaAvaliacao(false);
+    setObservacao('');
 
     try {
       const urlFind = `${API_ENDPOINTS.ALL_STAGE_EVALUATIONS}/find?applicationId=${applicationId}&processStageId=${processStageId}&committeeMemberId=1`;
+      
       const res = await fetch(urlFind, {
-                            headers: {
-                                ...getAuthHeaders()
-                            }
-                        });
+        headers: {
+          ...getAuthHeaders()
+        }
+      });
 
+    
       const criteriosRes = await fetch(API_ENDPOINTS.EVALUATION_CRITERIA_BY_PROCESS_STAGE(processStageId), {
-                            headers: {
-                                ...getAuthHeaders()
-                            }
-                        });
+        headers: {
+          ...getAuthHeaders()
+        }
+      });
       if (!criteriosRes.ok) throw new Error('Erro ao buscar critérios');
       const criteriosData = await criteriosRes.json();
       setCriterios(criteriosData);
 
       if (res.status === 404) {
         setIsNovaAvaliacao(true);
+        setObservacao('');
         return;
       }
 
@@ -105,13 +124,15 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
       setStageEvaluation(stageEval);
       setIsNovaAvaliacao(false);
 
+
+
       const scoresRes = await fetch(
         `${API_ENDPOINTS.GET_CRITERION_SCORES_BY_STAGE_EVALUATION(stageEval.id)}`
-      , {
+        , {
           headers: {
-              ...getAuthHeaders()
+            ...getAuthHeaders()
           }
-      })
+        })
 
       if (scoresRes.status === 204) {
         setScores([]);
@@ -127,7 +148,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
     }
   };
 
-  const enviarScores = (valores, isNew) => {
+  const enviarScores = (valores, isNew, totalScore, observations) => {
     const processStageId = processStageMap[selectedStage];
 
     const scoresPayload = Object.entries(valores).map(([criterioId, scoreValue]) => ({
@@ -142,13 +163,14 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
         committeeMemberId: 1,
         evaluationDate: new Date().toISOString(),
       };
+      
 
       return fetch(API_ENDPOINTS.ALL_STAGE_EVALUATIONS, {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: {
-            ...getAuthHeaders(),
-            'Content-Type': 'application/json' 
+          ...getAuthHeaders(),
+          'Content-Type': 'application/json'
         }
       }).then(res => {
         if (!res.ok) throw new Error('Erro ao criar Stage Evaluation');
@@ -162,10 +184,26 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
         body: JSON.stringify({ scores: scoresPayload }),
         headers: {
           ...getAuthHeaders(),
-          'Content-Type': 'application/json' 
+          'Content-Type': 'application/json'
         }
       });
     };
+
+    const enviarObservacao = (stageEvalId) => {
+      return fetch(`${API_ENDPOINTS.ALL_STAGE_EVALUATIONS}/${stageEvalId}/observations`, {
+        method: 'PATCH', // trocar POST por PATCH
+        headers: {
+          ...getAuthHeaders(),
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ observations })
+      }).then(res => {
+        if (!res.ok) throw new Error('Erro ao atualizar observação');
+        return res.json();
+      });
+    };
+
+
 
     const calcularTotalScore = async (stageEvalId) => {
       try {
@@ -185,6 +223,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
       }
     };
 
+
     const executar = async () => {
       try {
         let id = stageEvaluationId;
@@ -193,15 +232,18 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
           id = newStage.id;
           setStageEvaluationId(id);
         }
+
         await enviarNotas(id);
+        await enviarObservacao(id); // <- adicionada aqui
         await calcularTotalScore(id);
         await handleStageSelection(selectedStage);
-        alert('Pontuações enviadas com sucesso!');
+        alert('Avaliação enviada com sucesso!');
       } catch (err) {
         console.error(err);
-        alert('Erro ao enviar pontuações.');
+        alert('Erro ao enviar avaliação.');
       }
     };
+
 
     executar();
   };
@@ -211,6 +253,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
   };
 
   return (
+
     <Card>
       <Card.Header>
         <h5>Avaliação</h5>
@@ -255,15 +298,20 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
                 </div>
 
                 {activeEvaluationTab === 'preProject' && (
-                  <FormularioAvaliacaoPP
-                    onSubmit={enviarScores}
-                    onRefresh={recarregarStageEvaluation}
-                    avaliacaoExistente={stageEvaluation}
-                    isNovaAvaliacao={isNovaAvaliacao}
-                    criterios={criterios}
-                    scoresExistentes={scores}
-                  />
+                  <>
+                    <FormularioAvaliacaoPP
+                      onSubmit={enviarScores}
+                      onRefresh={recarregarStageEvaluation}
+                      avaliacaoExistente={stageEvaluation}
+                      isNovaAvaliacao={isNovaAvaliacao}
+                      criterios={criterios}
+                      scoresExistentes={scores}
+                      observacaoInicial={observacao}
+                    />
+                  </>
                 )}
+
+
 
                 {activeEvaluationTab === 'interview' && (
                   <FormularioEntrevista
@@ -273,6 +321,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
                     isNovaAvaliacao={isNovaAvaliacao}
                     criterios={criterios}
                     scoresExistentes={scores}
+                    observacaoInicial={observacao}
                   />
                 )}
 
@@ -284,6 +333,7 @@ const AvaliacaoCandidato = ({ selectedCandidate }) => {
                     isNovaAvaliacao={isNovaAvaliacao}
                     criterios={criterios}
                     scoresExistentes={scores}
+                    observacaoInicial={observacao}
                   />
                 )}
 

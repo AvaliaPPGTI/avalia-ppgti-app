@@ -9,7 +9,8 @@ const FormularioGenerico = ({
   criterios = [],
   titulo = 'Formulário de Avaliação',
   classificatorio = false,
-  scoresExistentes = []
+  scoresExistentes = [], 
+  observacaoInicial = ''
 }) => {
   const [estadoInternoDeEdicao, setEstadoInternoDeEdicao] = useState(false);
   const emEdicao = isNovaAvaliacao ? true : estadoInternoDeEdicao;
@@ -18,6 +19,7 @@ const FormularioGenerico = ({
   const [valores, setValores] = useState({});
   const [erros, setErros] = useState({});
   const [loading, setLoading] = useState(!criterios.length);
+  const [observations, setObservations] = useState(observacaoInicial);
 
   const calcularPontuacaoTotal = () => {
     const total = Object.values(valores).reduce(
@@ -26,6 +28,11 @@ const FormularioGenerico = ({
     );
     setPontuacaoTotal(total);
   };
+
+  useEffect(() => {
+  setObservations(observacaoInicial);
+}, [observacaoInicial]);
+
 
   useEffect(() => {
     calcularPontuacaoTotal();
@@ -80,7 +87,7 @@ const FormularioGenerico = ({
     }
 
     if (onSubmit) {
-      onSubmit(valores, isNovaAvaliacao, pontuacaoTotal);
+      onSubmit(valores, isNovaAvaliacao, pontuacaoTotal, observations);
     }
 
     if (onRefresh) {
@@ -150,11 +157,23 @@ const FormularioGenerico = ({
               {classificatorio
                 ? 'Etapa somente classificatória'
                 : pontuacaoTotal >= 70
-                ? '✅ Aprovado'
-                : '❌ Reprovado'}
+                  ? '✅ Aprovado'
+                  : '❌ Reprovado'}
             </Card.Text>
           </Card.Body>
         </Card>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Observações</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            placeholder="Digite suas observações aqui..."
+            value={observations}
+            onChange={(e) => setObservations(e.target.value)}
+            disabled={!isNovaAvaliacao && !emEdicao}
+          />
+        </Form.Group>
 
         {isNovaAvaliacao ? (
           <Button

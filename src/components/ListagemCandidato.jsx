@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Dropdown, ListGroup, Alert } from 'react-bootstrap';
-import { API_ENDPOINTS } from '../config'; 
+import { API_ENDPOINTS } from '../config';
 
 const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
     const [selectedTheme, setSelectedTheme] = useState('All');
@@ -14,7 +14,7 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
         const token = localStorage.getItem('token');
         return token ? { Authorization: `Bearer ${token}` } : {};
     };
-    
+
     useEffect(() => {
         fetch(API_ENDPOINTS.RESEARCH_TOPICS, {
             headers: {
@@ -35,12 +35,12 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
             setError(null);
             let allCandidatos = [];
             try {
-                const results = await Promise.all(topics.map(topic => 
+                const results = await Promise.all(topics.map(topic =>
                     fetch(API_ENDPOINTS.HOMOLOGATED_CANDIDATES_BY_TOPIC(topic.id), {
-                            headers: {
-                                ...getAuthHeaders()
-                            }
-                        })
+                        headers: {
+                            ...getAuthHeaders()
+                        }
+                    })
                         .then(res => res.status === 204 ? [] : res.json().then(data => data.map(c => ({ ...c, topicName: topic.name }))))
                         .catch(() => [])
                 ));
@@ -59,11 +59,11 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
 
         const fetchByTopic = () => {
             setLoading(true);
-                fetch(API_ENDPOINTS.HOMOLOGATED_CANDIDATES_BY_TOPIC(selectedTopicId), {
-                        headers: {
-                            ...getAuthHeaders()
-                        }
-                    })
+            fetch(API_ENDPOINTS.HOMOLOGATED_CANDIDATES_BY_TOPIC(selectedTopicId), {
+                headers: {
+                    ...getAuthHeaders()
+                }
+            })
                 .then(response => {
                     if (response.status === 204) return [];
                     if (!response.ok) throw new Error('Erro ao carregar os candidatos');
@@ -98,31 +98,45 @@ const ListagemCandidato = ({ onSelectCandidate, onViewCandidadeInfo }) => {
 
     return (
         <Card>
+
             <Card.Header className="d-flex justify-content-between align-items-center">
                 <h5>Candidatos</h5>
                 <Dropdown>
-                    <Dropdown.Toggle variant="primary" id="dropdown-themes" style={{ width: "400px", alignItems: "center", overflow: "hidden" }}>
+                    <Dropdown.Toggle
+                        variant="primary"
+                        id="dropdown-themes"
+                        style={{ width: "400px", alignItems: "center", overflow: "hidden" }}
+                    >
                         {selectedTheme === 'All' ? 'Todos os Temas' : selectedTheme}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => {
-                            setSelectedTheme('All');
-                            setSelectedTopicId('All');
-                        }}>Todos os Temas</Dropdown.Item>
-                        {topics.map((topic) => (
-                            <Dropdown.Item
-                                key={topic.id}
-                                onClick={() => {
-                                    setSelectedTheme(topic.name);
-                                    setSelectedTopicId(topic.id);
-                                }}
-                            >
-                                {topic.name}
-                            </Dropdown.Item>
-                        ))}
+                        <Dropdown.Item
+                            onClick={() => {
+                                setSelectedTheme('All');
+                                setSelectedTopicId('All');
+                            }}
+                        >
+                            Todos os Temas
+                        </Dropdown.Item>
+
+                        {topics
+                            .slice() // Cria uma cópia para não mutar o array original
+                            .sort((a, b) => a.id - b.id) // Ordena por ID
+                            .map((topic) => (
+                                <Dropdown.Item
+                                    key={topic.id}
+                                    onClick={() => {
+                                        setSelectedTheme(`Tema ${topic.id}: ${topic.name}`);
+                                        setSelectedTopicId(topic.id);
+                                    }}
+                                >
+                                    Tema {topic.id}: {topic.name}
+                                </Dropdown.Item>
+                            ))}
                     </Dropdown.Menu>
                 </Dropdown>
             </Card.Header>
+
             <Card.Body style={{ maxHeight: '80vh', overflowY: 'auto' }}>
                 {loading ? (
                     <Alert variant="secondary" className="text-center">Carregando...</Alert>

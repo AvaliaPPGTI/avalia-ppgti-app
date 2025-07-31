@@ -137,8 +137,23 @@ const ClassificacaoGeral = ({ processId = 1 }) => {
     useEffect(() => {
         const fetchVacancies = async () => {
             try {
-                const res = await fetch(`http://localhost:8080/api/research-topics/by-process/${processId}`);
-                const data = await res.json();
+                const res = await fetch(`http://localhost:8080/api/research-topics/by-process/${processId}`, {
+                    headers: {
+                        ...getAuthHeaders()
+                    }
+                });
+
+                if (res.status === 204) {
+                    setTopicVacancies({});
+                    return;
+                }
+
+                if (!res.ok) {
+                    throw new Error(`Erro HTTP: ${res.status}`);
+                }
+
+                const text = await res.text();
+                const data = text ? JSON.parse(text) : [];
 
                 const vacanciesMap = {};
                 data.forEach(topic => {
@@ -148,8 +163,10 @@ const ClassificacaoGeral = ({ processId = 1 }) => {
                 setTopicVacancies(vacanciesMap);
             } catch (err) {
                 console.error('Erro ao buscar vagas por tema:', err);
+                setTopicVacancies({});
             }
         };
+
 
         fetchVacancies();
     }, [processId]);
@@ -159,10 +176,10 @@ const ClassificacaoGeral = ({ processId = 1 }) => {
             setLoading(true);
             const response = await fetch(API_ENDPOINTS.GENERATE_RANKING(processId), {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     ...getAuthHeaders()
-                 },
+                },
             });
 
 

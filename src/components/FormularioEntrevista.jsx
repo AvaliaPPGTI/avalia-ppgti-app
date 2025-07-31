@@ -6,6 +6,7 @@ const FormularioEntrevista = ({
   isNovaAvaliacao,
   criterios = [],
   scoresExistentes = [],
+  observacaoInicial,
 }) => {
   return (
     <FormularioGenerico
@@ -16,6 +17,7 @@ const FormularioEntrevista = ({
       isNovaAvaliacao={isNovaAvaliacao}
       criterios={criterios}
       scoresExistentes={scoresExistentes}
+      observacaoInicial={observacaoInicial}
     />
   );
 };
